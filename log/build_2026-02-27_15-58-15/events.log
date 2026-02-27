@@ -1,0 +1,64 @@
+[0.000000] (-) TimerEvent: {}
+[0.000215] (ros2_triage) JobQueued: {'identifier': 'ros2_triage', 'dependencies': OrderedDict()}
+[0.000269] (ros2_triage) JobStarted: {'identifier': 'ros2_triage'}
+[0.098535] (-) TimerEvent: {}
+[0.198803] (-) TimerEvent: {}
+[0.301375] (-) TimerEvent: {}
+[0.401655] (-) TimerEvent: {}
+[0.501895] (-) TimerEvent: {}
+[0.602147] (-) TimerEvent: {}
+[0.702370] (-) TimerEvent: {}
+[0.802633] (-) TimerEvent: {}
+[0.902943] (-) TimerEvent: {}
+[1.003211] (-) TimerEvent: {}
+[1.103456] (-) TimerEvent: {}
+[1.203727] (-) TimerEvent: {}
+[1.305546] (-) TimerEvent: {}
+[1.405828] (-) TimerEvent: {}
+[1.507050] (-) TimerEvent: {}
+[1.607880] (-) TimerEvent: {}
+[1.708118] (-) TimerEvent: {}
+[1.808858] (-) TimerEvent: {}
+[1.860935] (ros2_triage) Command: {'cmd': ['/usr/bin/python3', '-W', 'ignore:setup.py install is deprecated', '-W', 'ignore:easy_install command is deprecated', 'setup.py', 'develop', '--editable', '--build-directory', '/home/darshan/ros2_triger/build/ros2_triage/build', '--no-deps', 'symlink_data'], 'cwd': '/home/darshan/ros2_triger/build/ros2_triage', 'env': {'GJS_DEBUG_TOPICS': 'JS ERROR;JS LOG', 'LESSOPEN': '| /usr/bin/lesspipe %s', 'VSCODE_CWD': '/home/darshan', 'VSCODE_ESM_ENTRYPOINT': 'vs/workbench/api/node/extensionHostProcess', 'LANGUAGE': 'en_IN:en', 'USER': 'darshan', 'VSCODE_NLS_CONFIG': '{"userLocale":"en-gb","osLocale":"en-in","resolvedLanguage":"en","defaultMessagesFile":"/usr/share/antigravity/resources/app/out/nls.messages.json","locale":"en-gb","availableLanguages":{}}', 'VSCODE_HANDLES_UNCAUGHT_ERRORS': 'true', 'XDG_SESSION_TYPE': 'wayland', 'SHLVL': '1', 'LD_LIBRARY_PATH': '/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib', 'HOME': '/home/darshan', 'CHROME_DESKTOP': 'antigravity.desktop', 'OLDPWD': '/home/darshan/ros2_triger', 'DESKTOP_SESSION': 'ubuntu', 'NO_PROXY': '*.azureedge.net', 'NVM_BIN': '/home/darshan/.nvm/versions/node/v22.17.1/bin', 'NVM_INC': '/home/darshan/.nvm/versions/node/v22.17.1/include/node', 'VSCODE_IPC_HOOK': '/run/user/1000/vscode-4472c113-1.10-main.sock', 'GIO_LAUNCHED_DESKTOP_FILE': '/usr/share/applications/antigravity.desktop', 'ROS_PYTHON_VERSION': '3', 'GNOME_SHELL_SESSION_MODE': 'ubuntu', 'GTK_MODULES': 'gail:atk-bridge', 'MANAGERPID': '2120', 'SYSTEMD_EXEC_PID': '2315', 'IM_CONFIG_CHECK_ENV': '1', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1000/bus', 'GIO_LAUNCHED_DESKTOP_FILE_PID': '78826', 'NVM_DIR': '/home/darshan/.nvm', 'VSCODE_CRASH_REPORTER_PROCESS_TYPE': 'extensionHost', 'IM_CONFIG_PHASE': '1', 'WAYLAND_DISPLAY': 'wayland-0', 'ROS_DISTRO': 'humble', 'LOGNAME': 'darshan', 'JOURNAL_STREAM': '8:17549', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'XDG_SESSION_CLASS': 'user', 'USERNAME': 'darshan', 'GNOME_DESKTOP_SESSION_ID': 'this-is-deprecated', 'ROS_LOCALHOST_ONLY': '0', 'ANTIGRAVITY_EDITOR_APP_ROOT': '/usr/share/antigravity/resources/app', 'PATH': '/home/darshan/.local/bin:/opt/ros/humble/bin:/home/darshan/.nvm/versions/node/v22.17.1/bin:/home/darshan/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin', 'SESSION_MANAGER': 'local/DGlegacy:@/tmp/.ICE-unix/2276,unix/DGlegacy:/tmp/.ICE-unix/2276', 'INVOCATION_ID': '583c6dddbb5e4f04b956ed6f41263219', 'XDG_MENU_PREFIX': 'gnome-', 'GNOME_SETUP_DISPLAY': ':1', 'XDG_RUNTIME_DIR': '/run/user/1000', 'GDK_BACKEND': 'x11', 'DISPLAY': ':0', 'LANG': 'en_US.UTF-8', 'XDG_CURRENT_DESKTOP': 'Unity', 'XMODIFIERS': '@im=ibus', 'XDG_SESSION_DESKTOP': 'ubuntu', 'XAUTHORITY': '/run/user/1000/.mutter-Xwaylandauth.1YBWK3', 'SSH_AGENT_LAUNCHER': 'gnome-keyring', 'SSH_AUTH_SOCK': '/run/user/1000/keyring/ssh', 'AMENT_PREFIX_PATH': '/opt/ros/humble', 'ORIGINAL_XDG_CURRENT_DESKTOP': 'ubuntu:GNOME', 'SHELL': '/bin/bash', 'QT_ACCESSIBILITY': '1', 'ELECTRON_RUN_AS_NODE': '1', 'GDMSESSION': 'ubuntu', 'LESSCLOSE': '/usr/bin/lesspipe %s %s', 'GJS_DEBUG_OUTPUT': 'stderr', 'QT_IM_MODULE': 'ibus', 'PWD': '/home/darshan/ros2_triger/build/ros2_triage', 'LC_ALL': 'en_US.UTF-8', 'XDG_CONFIG_DIRS': '/etc/xdg/xdg-ubuntu:/etc/xdg', 'VSCODE_CODE_CACHE_PATH': '/home/darshan/.config/Antigravity/CachedData/7a8657542180fb8440c8dcc20d83285fe11360ed', 'XDG_DATA_DIRS': '/usr/share/ubuntu:/home/darshan/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop', 'PYTHONPATH': '/home/darshan/ros2_triger/build/ros2_triage/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/darshan/ros2_triger/install/ros2_triage/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages', 'COLCON': '1', 'VSCODE_PID': '78826'}, 'shell': False}
+[1.909852] (-) TimerEvent: {}
+[2.011839] (-) TimerEvent: {}
+[2.112092] (-) TimerEvent: {}
+[2.213719] (-) TimerEvent: {}
+[2.314140] (-) TimerEvent: {}
+[2.414408] (-) TimerEvent: {}
+[2.515541] (-) TimerEvent: {}
+[2.615833] (-) TimerEvent: {}
+[2.717382] (-) TimerEvent: {}
+[2.817669] (-) TimerEvent: {}
+[2.848218] (ros2_triage) StdoutLine: {'line': b'running develop\n'}
+[2.917828] (-) TimerEvent: {}
+[3.018123] (-) TimerEvent: {}
+[3.118976] (-) TimerEvent: {}
+[3.219560] (-) TimerEvent: {}
+[3.320658] (-) TimerEvent: {}
+[3.420935] (-) TimerEvent: {}
+[3.521210] (-) TimerEvent: {}
+[3.550255] (ros2_triage) StdoutLine: {'line': b'running egg_info\n'}
+[3.550532] (ros2_triage) StdoutLine: {'line': b'creating ros2_triage.egg-info\n'}
+[3.550662] (ros2_triage) StdoutLine: {'line': b'writing ros2_triage.egg-info/PKG-INFO\n'}
+[3.551572] (ros2_triage) StdoutLine: {'line': b'writing dependency_links to ros2_triage.egg-info/dependency_links.txt\n'}
+[3.552259] (ros2_triage) StdoutLine: {'line': b'writing entry points to ros2_triage.egg-info/entry_points.txt\n'}
+[3.552407] (ros2_triage) StdoutLine: {'line': b'writing requirements to ros2_triage.egg-info/requires.txt\n'}
+[3.552529] (ros2_triage) StdoutLine: {'line': b'writing top-level names to ros2_triage.egg-info/top_level.txt\n'}
+[3.552660] (ros2_triage) StdoutLine: {'line': b"writing manifest file 'ros2_triage.egg-info/SOURCES.txt'\n"}
+[3.555821] (ros2_triage) StdoutLine: {'line': b"reading manifest file 'ros2_triage.egg-info/SOURCES.txt'\n"}
+[3.557204] (ros2_triage) StdoutLine: {'line': b"writing manifest file 'ros2_triage.egg-info/SOURCES.txt'\n"}
+[3.561147] (ros2_triage) StdoutLine: {'line': b'running build_ext\n'}
+[3.561435] (ros2_triage) StdoutLine: {'line': b'Creating /home/darshan/ros2_triger/install/ros2_triage/lib/python3.10/site-packages/ros2-triage.egg-link (link to .)\n'}
+[3.565580] (ros2_triage) StdoutLine: {'line': b'\n'}
+[3.565930] (ros2_triage) StdoutLine: {'line': b'Installed /home/darshan/ros2_triger/build/ros2_triage\n'}
+[3.566061] (ros2_triage) StdoutLine: {'line': b'running symlink_data\n'}
+[3.566186] (ros2_triage) StdoutLine: {'line': b'creating /home/darshan/ros2_triger/install/ros2_triage/share/ament_index\n'}
+[3.567874] (ros2_triage) StdoutLine: {'line': b'creating /home/darshan/ros2_triger/install/ros2_triage/share/ament_index/resource_index\n'}
+[3.568138] (ros2_triage) StdoutLine: {'line': b'creating /home/darshan/ros2_triger/install/ros2_triage/share/ament_index/resource_index/packages\n'}
+[3.568262] (ros2_triage) StdoutLine: {'line': b'symbolically linking /home/darshan/ros2_triger/build/ros2_triage/resource/ros2_triage -> /home/darshan/ros2_triger/install/ros2_triage/share/ament_index/resource_index/packages\n'}
+[3.570908] (ros2_triage) StdoutLine: {'line': b'symbolically linking /home/darshan/ros2_triger/build/ros2_triage/package.xml -> /home/darshan/ros2_triger/install/ros2_triage/share/ros2_triage\n'}
+[3.621455] (-) TimerEvent: {}
+[3.648823] (ros2_triage) CommandEnded: {'returncode': 0}
+[3.679030] (ros2_triage) JobEnded: {'identifier': 'ros2_triage', 'rc': 0}
+[3.679609] (-) EventReactorShutdown: {}

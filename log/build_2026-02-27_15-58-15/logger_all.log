@@ -1,0 +1,130 @@
+[0.403s] DEBUG:colcon:Command line arguments: ['/usr/bin/colcon', 'build', '--symlink-install', '--packages-select', 'ros2_triage']
+[0.403s] DEBUG:colcon:Parsed command line arguments: Namespace(log_base=None, log_level=None, verb_name='build', build_base='build', install_base='install', merge_install=False, symlink_install=True, test_result_base=None, continue_on_error=False, executor='parallel', parallel_workers=2, event_handlers=None, ignore_user_meta=False, metas=['./colcon.meta'], base_paths=['.'], packages_ignore=None, packages_ignore_regex=None, paths=None, packages_up_to=None, packages_up_to_regex=None, packages_above=None, packages_above_and_dependencies=None, packages_above_depth=None, packages_select_by_dep=None, packages_skip_by_dep=None, packages_skip_up_to=None, packages_select_build_failed=False, packages_skip_build_finished=False, packages_select_test_failures=False, packages_skip_test_passed=False, packages_select=['ros2_triage'], packages_skip=None, packages_select_regex=None, packages_skip_regex=None, packages_start=None, packages_end=None, allow_overriding=[], cmake_args=None, cmake_target=None, cmake_target_skip_unavailable=False, cmake_clean_cache=False, cmake_clean_first=False, cmake_force_configure=False, ament_cmake_args=None, catkin_cmake_args=None, catkin_skip_building_tests=False, mixin_files=None, mixin=None, verb_parser=<colcon_mixin.mixin.mixin_argument.MixinArgumentDecorator object at 0x77d2e3ab7550>, verb_extension=<colcon_core.verb.build.BuildVerb object at 0x77d2e3ab6ce0>, main=<bound method BuildVerb.main of <colcon_core.verb.build.BuildVerb object at 0x77d2e3ab6ce0>>, mixin_verb=('build',))
+[1.034s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) check parameters
+[1.034s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) check parameters
+[1.034s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) check parameters
+[1.034s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) check parameters
+[1.034s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) discover
+[1.034s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) discover
+[1.035s] INFO:colcon.colcon_core.package_discovery:Crawling recursively for packages in '/home/darshan/ros2_triger'
+[1.035s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ignore', 'ignore_ament_install']
+[1.035s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore'
+[1.035s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore_ament_install'
+[1.035s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_pkg']
+[1.035s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_pkg'
+[1.035s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_meta']
+[1.035s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_meta'
+[1.036s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ros']
+[1.036s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ros'
+[1.081s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['cmake', 'python']
+[1.082s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'cmake'
+[1.082s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python'
+[1.082s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['python_setup_py']
+[1.082s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python_setup_py'
+[1.082s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extensions ['ignore', 'ignore_ament_install']
+[1.082s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extension 'ignore'
+[1.082s] Level 1:colcon.colcon_core.package_identification:_identify(build) ignored
+[1.083s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extensions ['ignore', 'ignore_ament_install']
+[1.083s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extension 'ignore'
+[1.083s] Level 1:colcon.colcon_core.package_identification:_identify(install) ignored
+[1.083s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extensions ['ignore', 'ignore_ament_install']
+[1.083s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extension 'ignore'
+[1.083s] Level 1:colcon.colcon_core.package_identification:_identify(log) ignored
+[1.084s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['ignore', 'ignore_ament_install']
+[1.084s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ignore'
+[1.084s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ignore_ament_install'
+[1.084s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['colcon_pkg']
+[1.084s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'colcon_pkg'
+[1.084s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['colcon_meta']
+[1.084s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'colcon_meta'
+[1.084s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['ros']
+[1.084s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ros'
+[1.085s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['cmake', 'python']
+[1.085s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'cmake'
+[1.085s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'python'
+[1.085s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['python_setup_py']
+[1.085s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'python_setup_py'
+[1.085s] Level 1:colcon.colcon_core.package_identification:_identify(src/ros2_triage) by extensions ['ignore', 'ignore_ament_install']
+[1.085s] Level 1:colcon.colcon_core.package_identification:_identify(src/ros2_triage) by extension 'ignore'
+[1.085s] Level 1:colcon.colcon_core.package_identification:_identify(src/ros2_triage) by extension 'ignore_ament_install'
+[1.085s] Level 1:colcon.colcon_core.package_identification:_identify(src/ros2_triage) by extensions ['colcon_pkg']
+[1.086s] Level 1:colcon.colcon_core.package_identification:_identify(src/ros2_triage) by extension 'colcon_pkg'
+[1.086s] Level 1:colcon.colcon_core.package_identification:_identify(src/ros2_triage) by extensions ['colcon_meta']
+[1.086s] Level 1:colcon.colcon_core.package_identification:_identify(src/ros2_triage) by extension 'colcon_meta'
+[1.086s] Level 1:colcon.colcon_core.package_identification:_identify(src/ros2_triage) by extensions ['ros']
+[1.086s] Level 1:colcon.colcon_core.package_identification:_identify(src/ros2_triage) by extension 'ros'
+[1.092s] DEBUG:colcon.colcon_core.package_identification:Package 'src/ros2_triage' with type 'ros.ament_python' and name 'ros2_triage'
+[1.093s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) using defaults
+[1.093s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) discover
+[1.093s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) using defaults
+[1.093s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) discover
+[1.093s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) using defaults
+[1.136s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) check parameters
+[1.136s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) discover
+[1.144s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 447 installed packages in /opt/ros/humble
+[1.151s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) using defaults
+[1.275s] Level 5:colcon.colcon_core.verb:set package 'ros2_triage' build argument 'cmake_args' from command line to 'None'
+[1.275s] Level 5:colcon.colcon_core.verb:set package 'ros2_triage' build argument 'cmake_target' from command line to 'None'
+[1.275s] Level 5:colcon.colcon_core.verb:set package 'ros2_triage' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[1.275s] Level 5:colcon.colcon_core.verb:set package 'ros2_triage' build argument 'cmake_clean_cache' from command line to 'False'
+[1.275s] Level 5:colcon.colcon_core.verb:set package 'ros2_triage' build argument 'cmake_clean_first' from command line to 'False'
+[1.275s] Level 5:colcon.colcon_core.verb:set package 'ros2_triage' build argument 'cmake_force_configure' from command line to 'False'
+[1.275s] Level 5:colcon.colcon_core.verb:set package 'ros2_triage' build argument 'ament_cmake_args' from command line to 'None'
+[1.275s] Level 5:colcon.colcon_core.verb:set package 'ros2_triage' build argument 'catkin_cmake_args' from command line to 'None'
+[1.275s] Level 5:colcon.colcon_core.verb:set package 'ros2_triage' build argument 'catkin_skip_building_tests' from command line to 'False'
+[1.275s] DEBUG:colcon.colcon_core.verb:Building package 'ros2_triage' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/darshan/ros2_triger/build/ros2_triage', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/darshan/ros2_triger/install/ros2_triage', 'merge_install': False, 'path': '/home/darshan/ros2_triger/src/ros2_triage', 'symlink_install': True, 'test_result_base': None}
+[1.276s] INFO:colcon.colcon_core.executor:Executing jobs using 'parallel' executor
+[1.277s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete
+[1.278s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/home/darshan/ros2_triger/src/ros2_triage' with build type 'ament_python'
+[1.278s] Level 1:colcon.colcon_core.shell:create_environment_hook('ros2_triage', 'ament_prefix_path')
+[1.289s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_core.shell.bat': Not used on non-Windows systems
+[1.289s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/darshan/ros2_triger/install/ros2_triage/share/ros2_triage/hook/ament_prefix_path.ps1'
+[1.293s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/darshan/ros2_triger/install/ros2_triage/share/ros2_triage/hook/ament_prefix_path.dsv'
+[1.294s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/darshan/ros2_triger/install/ros2_triage/share/ros2_triage/hook/ament_prefix_path.sh'
+[1.297s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.297s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[2.121s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/darshan/ros2_triger/src/ros2_triage'
+[2.121s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[2.122s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[3.140s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/darshan/ros2_triger/build/ros2_triage': PYTHONPATH=/home/darshan/ros2_triger/build/ros2_triage/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/darshan/ros2_triger/install/ros2_triage/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/darshan/ros2_triger/build/ros2_triage/build --no-deps symlink_data
+[4.926s] Level 1:colcon.colcon_core.shell:create_environment_hook('ros2_triage', 'pythonpath_develop')
+[4.928s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/darshan/ros2_triger/build/ros2_triage' returned '0': PYTHONPATH=/home/darshan/ros2_triger/build/ros2_triage/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/darshan/ros2_triger/install/ros2_triage/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/darshan/ros2_triger/build/ros2_triage/build --no-deps symlink_data
+[4.929s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/darshan/ros2_triger/build/ros2_triage/share/ros2_triage/hook/pythonpath_develop.ps1'
+[4.931s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/darshan/ros2_triger/build/ros2_triage/share/ros2_triage/hook/pythonpath_develop.dsv'
+[4.931s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/darshan/ros2_triger/build/ros2_triage/share/ros2_triage/hook/pythonpath_develop.sh'
+[4.940s] Level 1:colcon.colcon_core.environment:checking '/home/darshan/ros2_triger/install/ros2_triage' for CMake module files
+[4.941s] Level 1:colcon.colcon_core.environment:checking '/home/darshan/ros2_triger/install/ros2_triage' for CMake config files
+[4.942s] Level 1:colcon.colcon_core.environment:checking '/home/darshan/ros2_triger/install/ros2_triage/lib'
+[4.942s] Level 1:colcon.colcon_core.environment:checking '/home/darshan/ros2_triger/install/ros2_triage/bin'
+[4.942s] Level 1:colcon.colcon_core.environment:checking '/home/darshan/ros2_triger/install/ros2_triage/lib/pkgconfig/ros2_triage.pc'
+[4.943s] Level 1:colcon.colcon_core.environment:checking '/home/darshan/ros2_triger/install/ros2_triage/lib/python3.10/site-packages'
+[4.943s] Level 1:colcon.colcon_core.shell:create_environment_hook('ros2_triage', 'pythonpath')
+[4.943s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/darshan/ros2_triger/install/ros2_triage/share/ros2_triage/hook/pythonpath.ps1'
+[4.944s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/darshan/ros2_triger/install/ros2_triage/share/ros2_triage/hook/pythonpath.dsv'
+[4.946s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/darshan/ros2_triger/install/ros2_triage/share/ros2_triage/hook/pythonpath.sh'
+[4.947s] Level 1:colcon.colcon_core.environment:checking '/home/darshan/ros2_triger/install/ros2_triage/bin'
+[4.947s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(ros2_triage)
+[4.948s] INFO:colcon.colcon_core.shell:Creating package script '/home/darshan/ros2_triger/install/ros2_triage/share/ros2_triage/package.ps1'
+[4.950s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/darshan/ros2_triger/install/ros2_triage/share/ros2_triage/package.dsv'
+[4.952s] INFO:colcon.colcon_core.shell:Creating package script '/home/darshan/ros2_triger/install/ros2_triage/share/ros2_triage/package.sh'
+[4.953s] INFO:colcon.colcon_core.shell:Creating package script '/home/darshan/ros2_triger/install/ros2_triage/share/ros2_triage/package.bash'
+[4.955s] INFO:colcon.colcon_core.shell:Creating package script '/home/darshan/ros2_triger/install/ros2_triage/share/ros2_triage/package.zsh'
+[4.956s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/darshan/ros2_triger/install/ros2_triage/share/colcon-core/packages/ros2_triage)
+[4.957s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:closing loop
+[4.957s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:loop closed
+[4.957s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete finished with '0'
+[4.957s] DEBUG:colcon.colcon_core.event_reactor:joining thread
+[4.986s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.terminal_notifier': Not used on non-Darwin systems
+[4.986s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.win32': Not used on non-Windows systems
+[4.986s] INFO:colcon.colcon_notification.desktop_notification:Sending desktop notification using 'notify2'
+[5.064s] DEBUG:colcon.colcon_core.event_reactor:joined thread
+[5.064s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/darshan/ros2_triger/install/local_setup.ps1'
+[5.071s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/darshan/ros2_triger/install/_local_setup_util_ps1.py'
+[5.077s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/darshan/ros2_triger/install/setup.ps1'
+[5.079s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/darshan/ros2_triger/install/local_setup.sh'
+[5.081s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/darshan/ros2_triger/install/_local_setup_util_sh.py'
+[5.083s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/darshan/ros2_triger/install/setup.sh'
+[5.085s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/darshan/ros2_triger/install/local_setup.bash'
+[5.087s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/darshan/ros2_triger/install/setup.bash'
+[5.090s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/darshan/ros2_triger/install/local_setup.zsh'
+[5.091s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/darshan/ros2_triger/install/setup.zsh'

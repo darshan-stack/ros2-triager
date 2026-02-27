@@ -1,0 +1,43 @@
+# expected_nodes.yaml
+# List of nodes that should be running in this robot project.
+# Copy this to your project root and customise it.
+#
+# Usage:
+#   ros2 triage --expected expected_nodes.yaml
+#
+# If a node in 'nodes' is missing → [CRIT] finding
+# If a node in 'optional' is missing → [INFO] finding
+# Nodes running but not listed → [INFO] "unexpected" finding
+
+nodes:
+  # Core navigation stack (Nav2)
+  - /controller_server
+  - /planner_server
+  - /bt_navigator
+  - /waypoint_follower
+  - /behavior_server
+
+  # Localization / mapping (pick one)
+  - /slam_toolbox
+  # - /amcl        # uncomment if using AMCL instead of SLAM
+
+  # Map / costmap
+  - /global_costmap
+  - /local_costmap
+
+  # Robot hardware drivers
+  - /diff_cont               # differential drive controller
+  - /joint_broad             # joint state broadcaster
+
+  # Sensors
+  # Add your sensor driver nodes here, for example:
+  # - /lidar_driver
+  # - /imu_driver
+
+optional:
+  # Nodes that enhance the system but are not strictly required
+  - /rviz2
+  - /foxglove_bridge
+  - /joy_node
+  - /teleop_twist_joy
+  - /robot_state_publisher
