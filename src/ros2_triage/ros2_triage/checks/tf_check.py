@@ -83,6 +83,9 @@ def check_tf(external_node: Node = None) -> list:
         # Check for expected frames
         for frame in EXPECTED_FRAMES:
             if frame not in available_frames:
+                # Missing "map" can be harmless on robots that operate purely in
+                # odom coordinates, so keep severity at WARNING but clarify in
+                # the suggestion that this may be intentional.
                 findings.append(Finding(
                     check='tf',
                     topic=f'tf:{frame}',
@@ -94,8 +97,13 @@ def check_tf(external_node: Node = None) -> list:
                     suggestion=(
                         f'Check that the node publishing the "{frame}" frame is '
                         f'running (e.g., robot_state_publisher for base_link, '
-                        f'map_server for map, nav2_amcl for odom→map). '
-                        f'Run: `ros2 run tf2_tools view_frames`'
+                        f'map_server for map, nav2_amcl for odom→map).\n'
+                        f'If your robot intentionally does not use a global '
+                        f'\"map\" frame (pure odom-only operation), you can treat '
+                        f'the missing \"map\" warning as informational or ignore '
+                        f'it via `--ignore tf:map`.\n'
+                        f'Run: `ros2 run tf2_tools view_frames` to inspect the '
+                        f'TF tree.'
                     ),
                 ))
 

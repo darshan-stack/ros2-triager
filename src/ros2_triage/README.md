@@ -1,4 +1,4 @@
-# ros2 triage 
+# ros2 triage
 
 A **ROS 2 CLI plugin** for runtime graph diagnostics. Think of it as `ros2doctor` for your running robot — it finds dead topics, QoS mismatches, and TF tree issues while your system is live.
 
@@ -15,9 +15,9 @@ ros2 triage
 
 | Check | What it finds | Flag |
 |-------|--------------|------|
-|  Dead Topics | Topics with publishers but no subscribers (or vice versa) | `--dead-topics` / `--no-dead-topics` |
-| ️ QoS Mismatches | Reliability/durability incompatibilities that drop messages | `--qos` / `--no-qos` |
-|  TF Tree | Missing frames, broken transform chains | `--tf` / `--no-tf` |
+| Dead Topics | Topics with publishers but no subscribers (or vice versa) | `--dead-topics` / `--no-dead-topics` |
+| QoS Mismatches | Reliability/durability incompatibilities that drop messages | `--qos` / `--no-qos` |
+| TF Tree | Missing frames, broken transform chains | `--tf` / `--no-tf` |
 
 All findings are **severity-ranked** (1=INFO, 2=WARN, 3=CRIT) and include **actionable suggestions**.
 
@@ -68,21 +68,21 @@ ros2 triage --help
   ros2 triage — Runtime Diagnostic Report
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-    DEAD TOPICS
+  DEAD TOPICS
   Topics with missing publishers or subscribers
   ────────────────────────────────────────────────────────────
   [CRIT]  /cmd_vel
          1 subscriber(s) [nav2_node] but 0 publishers — topic is UNPUBLISHED.
-          Check if the node that should publish this topic is running:
+         Check if the node that should publish this topic is running:
             `ros2 node list`. Verify launch files include the publisher node.
 
-  ️   QoS MISMATCHES
+  QoS MISMATCHES
   Publisher ↔ Subscriber QoS incompatibilities
   ────────────────────────────────────────────────────────────
   [CRIT]  /sensor_data
          Reliability mismatch: publisher [sensor_node]=RELIABLE,
          subscriber [processor]=BEST_EFFORT. Messages will be DROPPED.
-          Change processor subscription QoS to RELIABLE.
+         Change processor subscription QoS to RELIABLE.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   Summary: 2 CRITICAL  0 WARNING  0 INFO

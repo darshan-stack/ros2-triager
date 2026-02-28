@@ -39,7 +39,7 @@ def _sev_color(severity: int) -> str:
 
 
 def _ok() -> str:
-    return _c(Fore.GREEN, '') if HAS_COLOR else '[OK]'
+    return _c(Fore.GREEN, '[OK]') if HAS_COLOR else '[OK]'
 
 
 def _sev_badge(severity: int) -> str:
@@ -60,17 +60,17 @@ def _group(findings: List[Finding]) -> dict:
 # ── Section metadata ──────────────────────────────────────────────────────────
 
 SECTION = {
-    'dead_topics': ('  DEAD TOPICS',
+    'dead_topics': ('DEAD TOPICS',
                     'Topics with a missing publisher or subscriber'),
-    'qos':         ('️   QoS MISMATCHES',
+    'qos':         ('QoS MISMATCHES',
                     'Publisher ↔ Subscriber QoS incompatibilities (messages may be dropped)'),
-    'tf':          ('  TF TREE ISSUES',
+    'tf':          ('TF TREE ISSUES',
                     'TF frame connectivity problems'),
-    'hz':          ('⏱   RATE ANOMALIES',
+    'hz':          ('RATE ANOMALIES',
                     'Topics publishing slower than expected (sensor/control latency risk)'),
-    'nodes':       ('  NODE STATUS',
+    'nodes':       ('NODE STATUS',
                     'Expected nodes missing or unexpected nodes running'),
-    'snapshot':    ('  SNAPSHOT DIFF',
+    'snapshot':    ('SNAPSHOT DIFF',
                     'Changes detected since last saved baseline'),
 }
 
@@ -105,6 +105,21 @@ def print_human(findings: List[Finding],
                  _bold('│') + '\n')
     stream.write(_bold('└' + '─' * 62 + '┘') + '\n\n')
 
+    # ── Context note ─────────────────────────────────────────────────────────
+    # The tool only inspects the ROS 2 graph (topics, nodes, TF frames) that
+    # is visible at the instant of the check. It does not observe the actual
+    # physical robot state, and it cannot see remappings that are not active
+    # yet. Late-starting nodes, namespace remaps, or intentionally unused
+    # topics may therefore appear as findings even if the robot seems to work.
+    stream.write(
+        '  This report reflects the current ROS 2 graph only '
+        '(publishers, subscribers, TF frames), not the robot\'s\n'
+    )
+    stream.write(
+        '  physical state. Remappings, namespaces, or nodes that start late\n'
+        '  can temporarily show up as warnings until the graph settles.\n\n'
+    )
+
     # ── Empty state ───────────────────────────────────────────────────────────
     if not filtered:
         stream.write(
@@ -114,7 +129,7 @@ def print_human(findings: List[Finding],
         )
         if ignored:
             stream.write(
-                '  ' + _c(Fore.CYAN, f'ℹ  {len(ignored)} topic(s) ignored via --ignore\n')
+                '  ' + _c(Fore.CYAN, f'{len(ignored)} topic(s) ignored via --ignore\n')
             )
         _footer(findings, filtered, stream)
         return
@@ -136,7 +151,7 @@ def print_human(findings: List[Finding],
             # Multi-line suggestions
             suggestion_lines = f.suggestion.split('\n')
             stream.write(
-                f'         {_c(Fore.GREEN, " " + suggestion_lines[0])}\n'
+                f'         {_c(Fore.GREEN, suggestion_lines[0])}\n'
             )
             for line in suggestion_lines[1:]:
                 stream.write(f'            {_c(Fore.GREEN, line)}\n')
@@ -146,7 +161,7 @@ def print_human(findings: List[Finding],
     if ignored:
         stream.write(
             '  ' + _c(Fore.CYAN,
-                       f'ℹ  {len(ignored)} topic(s) ignored via --ignore: '
+                       f'{len(ignored)} topic(s) ignored via --ignore: '
                        + ', '.join(sorted(ignored))) + '\n\n'
         )
 
@@ -167,16 +182,16 @@ def _footer(all_findings, filtered, stream) -> None:
     if crits > 0:
         stream.write(
             '  ' +
-            _c(Fore.RED, ' Exit code 1 — CI pipeline should fail on CRITICAL findings.') +
+            _c(Fore.RED, 'Exit code 1 — CI pipeline should fail on CRITICAL findings.') +
             '\n'
         )
     elif warns > 0:
         stream.write(
-            '  ' + _c(Fore.YELLOW, '  Warnings found — review before deploying.') + '\n'
+            '  ' + _c(Fore.YELLOW, 'Warnings found - review before deploying.') + '\n'
         )
     else:
         stream.write(
-            '  ' + _c(Fore.GREEN, '  System looks healthy.') + '\n'
+            '  ' + _c(Fore.GREEN, 'System looks healthy.') + '\n'
         )
     stream.write(_bold('─' * 64) + '\n\n')
 
@@ -209,6 +224,17 @@ def print_json(findings: List[Finding],
             'info':     infos,
             'status':   'FAIL' if crits > 0 else ('WARN' if warns > 0 else 'PASS'),
         },
+        # Context note: ros2-triage always reasons from the live ROS 2 graph
+        # (topics, publishers, subscribers, TF frames) at the instant of the
+        # check. It does not observe the physical robot state directly, and it
+        # cannot account for nodes that have not started yet. This field
+        # mirrors the human-readable banner note for CI/automation users.
+        'note': (
+            'This report reflects the current ROS 2 graph only '
+            '(publishers, subscribers, TF frames), not the robot\'s physical '
+            'state. Remappings, namespaces, or nodes that start late can '
+            'temporarily appear as findings until the graph settles.'
+        ),
         'checks': [
             {
                 'name': check_name,

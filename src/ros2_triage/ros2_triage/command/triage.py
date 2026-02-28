@@ -311,7 +311,7 @@ class TriageCommand(CommandExtension):
                 cols = shutil.get_terminal_size(fallback=(80, 24)).columns
                 ts = time.strftime('%H:%M:%S')
                 header = (
-                    f'    ros2 triage --watch  │  '
+                    f'  ros2 triage --watch  │  '
                     f'refresh #{iteration}  │  {ts}  │  '
                     f'every {interval:.0f}s  │  Ctrl+C to exit'
                 )

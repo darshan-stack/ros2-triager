@@ -131,7 +131,7 @@ class BatteryMonitor(Node):
 
 def main():
     print('\n' + '='*60)
-    print('  \U0001f916  Robot Scenario \u2014 Simulated Failure Demo')
+    print('  Robot Scenario - Simulated Failure Demo')
     print('='*60)
     print('''
 Intentional problems created:
