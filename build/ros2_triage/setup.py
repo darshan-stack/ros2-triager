@@ -1,1 +1,0 @@
-/home/darshan/ros2_triger/src/ros2_triage/setup.py

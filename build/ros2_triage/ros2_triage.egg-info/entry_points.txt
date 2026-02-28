@@ -1,6 +1,0 @@
-[console_scripts]
-
-
-[ros2cli.command]
-triage = ros2_triage.command.triage:TriageCommand
-
