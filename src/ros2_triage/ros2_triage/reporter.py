@@ -39,7 +39,7 @@ def _sev_color(severity: int) -> str:
 
 
 def _ok() -> str:
-    return _c(Fore.GREEN, '✅') if HAS_COLOR else '[OK]'
+    return _c(Fore.GREEN, '[OK]') if HAS_COLOR else '[OK]'
 
 
 def _sev_badge(severity: int) -> str:
@@ -60,17 +60,17 @@ def _group(findings: List[Finding]) -> dict:
 # ── Section metadata ──────────────────────────────────────────────────────────
 
 SECTION = {
-    'dead_topics': ('🔴  DEAD TOPICS',
+    'dead_topics': ('DEAD TOPICS',
                     'Topics with a missing publisher or subscriber'),
-    'qos':         ('⚠️   QoS MISMATCHES',
+    'qos':         ('QoS MISMATCHES',
                     'Publisher ↔ Subscriber QoS incompatibilities (messages may be dropped)'),
-    'tf':          ('🔗  TF TREE ISSUES',
+    'tf':          ('TF TREE ISSUES',
                     'TF frame connectivity problems'),
-    'hz':          ('⏱   RATE ANOMALIES',
+    'hz':          ('RATE ANOMALIES',
                     'Topics publishing slower than expected (sensor/control latency risk)'),
-    'nodes':       ('🤖  NODE STATUS',
+    'nodes':       ('NODE STATUS',
                     'Expected nodes missing or unexpected nodes running'),
-    'snapshot':    ('📸  SNAPSHOT DIFF',
+    'snapshot':    ('SNAPSHOT DIFF',
                     'Changes detected since last saved baseline'),
 }
 
@@ -114,7 +114,7 @@ def print_human(findings: List[Finding],
         )
         if ignored:
             stream.write(
-                '  ' + _c(Fore.CYAN, f'ℹ  {len(ignored)} topic(s) ignored via --ignore\n')
+                '  ' + _c(Fore.CYAN, f'{len(ignored)} topic(s) ignored via --ignore\n')
             )
         _footer(findings, filtered, stream)
         return
@@ -136,7 +136,7 @@ def print_human(findings: List[Finding],
             # Multi-line suggestions
             suggestion_lines = f.suggestion.split('\n')
             stream.write(
-                f'         {_c(Fore.GREEN, "💡 " + suggestion_lines[0])}\n'
+                f'         {_c(Fore.GREEN, suggestion_lines[0])}\n'
             )
             for line in suggestion_lines[1:]:
                 stream.write(f'            {_c(Fore.GREEN, line)}\n')
@@ -146,7 +146,7 @@ def print_human(findings: List[Finding],
     if ignored:
         stream.write(
             '  ' + _c(Fore.CYAN,
-                       f'ℹ  {len(ignored)} topic(s) ignored via --ignore: '
+                       f'{len(ignored)} topic(s) ignored via --ignore: '
                        + ', '.join(sorted(ignored))) + '\n\n'
         )
 
@@ -167,16 +167,16 @@ def _footer(all_findings, filtered, stream) -> None:
     if crits > 0:
         stream.write(
             '  ' +
-            _c(Fore.RED, '⚡ Exit code 1 — CI pipeline should fail on CRITICAL findings.') +
+            _c(Fore.RED, 'Exit code 1 — CI pipeline should fail on CRITICAL findings.') +
             '\n'
         )
     elif warns > 0:
         stream.write(
-            '  ' + _c(Fore.YELLOW, '△  Warnings found — review before deploying.') + '\n'
+            '  ' + _c(Fore.YELLOW, 'Warnings found - review before deploying.') + '\n'
         )
     else:
         stream.write(
-            '  ' + _c(Fore.GREEN, '✅  System looks healthy.') + '\n'
+            '  ' + _c(Fore.GREEN, 'System looks healthy.') + '\n'
         )
     stream.write(_bold('─' * 64) + '\n\n')
 

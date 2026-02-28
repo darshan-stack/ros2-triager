@@ -42,5 +42,5 @@ A simpler alternative is to run two separate nodes from the terminal:
 Expected output:
   [CRIT]  /qos_demo
     Reliability mismatch: publisher=RELIABLE, subscriber=BEST_EFFORT
-    💡 Change subscriber QoS to RELIABLE or publisher to BEST_EFFORT.
+    Change subscriber QoS to RELIABLE or publisher to BEST_EFFORT.
 """

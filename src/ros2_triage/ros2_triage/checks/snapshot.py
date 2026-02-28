@@ -55,7 +55,7 @@ def save_snapshot(graph: dict,
     path = Path(output_path)
     with open(path, 'w') as f:
         json.dump(snap, f, indent=2)
-    print(f'\n✅  Snapshot saved: {path}')
+    print(f'\nSnapshot saved: {path}')
     print(f'    Topics captured : {len(snap["topics"])}')
     print(f'    Nodes captured  : {len(snap["nodes"])}')
     print(f'    Timestamp       : {snap["timestamp"]}')
