@@ -351,4 +351,4 @@ def _status(msg: str, json_mode: bool) -> None:
 
 
 def _warn(msg: str, json_mode: bool) -> None:
-    print(f'  ⚠  {msg}', file=sys.stderr)
+    print(f'    {msg}', file=sys.stderr)
