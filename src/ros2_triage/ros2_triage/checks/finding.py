@@ -105,6 +105,8 @@ INTERACTIVE_TOPICS = {
     '/local_costmap/footprint',    # set by operator / config, not runtime
     '/preempt_teleop',             # published by external operator tool
     '/speed_limit',                # published by speed_filter if configured
+    '/cmd_vel_joy',                # joystick teleop command input
+    '/cmd_vel_teleop',             # keyboard / teleop command input
 }
 
 # ── 5. Simulation (Gazebo) topic prefixes ─────────────────────────────────────
