@@ -1,4 +1,4 @@
-# ROS 2 Triager 🔬: Advanced Runtime Diagnostics for Robotic Systems
+# ROS 2 Triager : Advanced Runtime Diagnostics for Robotic Systems
 
 **ROS 2 Triager** is a powerful command-line interface (CLI) plugin designed for **real-time runtime graph diagnostics** in ROS 2 environments. It goes beyond static configuration checks to actively monitor your running robot, identifying critical issues like dead topics, QoS mismatches, TF tree problems, and more, all while providing actionable suggestions for resolution.
 
@@ -7,7 +7,7 @@
 
 --- 
 
-## ✨ Key Differentiators & Novelty
+##  Key Differentiators & Novelty
 
 ROS 2 Triager stands out by focusing on **dynamic runtime analysis**, offering capabilities crucial for maintaining the health and performance of complex robotic deployments. Its novel features provide unparalleled insight and automation potential:
 
@@ -19,24 +19,24 @@ ROS 2 Triager stands out by focusing on **dynamic runtime analysis**, offering c
 
 --- 
 
-## 🚀 Features
+##  Features
 
 ROS 2 Triager provides a comprehensive suite of checks to ensure the robustness of your robotic applications:
 
 | Check | What it finds | Flag |
 |-------|---------------|------|
-| 🔴 **Dead Topics** | Topics with publishers but no subscribers (or vice versa), indicating communication breakdowns. | `--dead-topics` / `--no-dead-topics` |
-| ⚠️ **QoS Mismatches** | Incompatible Quality of Service settings (e.g., reliability, durability) between publishers and subscribers, leading to message loss. | `--qos` / `--no-qos` |
-| 🔗 **TF Tree Issues** | Missing frames, broken transform chains, or inconsistencies in the robot's coordinate transformation tree. | `--tf` / `--no-tf` |
+|  **Dead Topics** | Topics with publishers but no subscribers (or vice versa), indicating communication breakdowns. | `--dead-topics` / `--no-dead-topics` |
+| ️ **QoS Mismatches** | Incompatible Quality of Service settings (e.g., reliability, durability) between publishers and subscribers, leading to message loss. | `--qos` / `--no-qos` |
+|  **TF Tree Issues** | Missing frames, broken transform chains, or inconsistencies in the robot's coordinate transformation tree. | `--tf` / `--no-tf` |
 | ⏱️ **Hz Rate Check** | Anomalies in topic publishing rates, flagging topics that are slower than expected. | `--check-hz` |
-| 🤖 **Expected Nodes** | Deviations from a predefined list of expected running nodes, identifying missing or rogue processes. | `--expected YAML_FILE` |
-| 🔄 **Graph Drift** | Changes in the ROS 2 graph structure compared to a saved baseline snapshot. | `--snapshot-diff FILE` |
+|  **Expected Nodes** | Deviations from a predefined list of expected running nodes, identifying missing or rogue processes. | `--expected YAML_FILE` |
+|  **Graph Drift** | Changes in the ROS 2 graph structure compared to a saved baseline snapshot. | `--snapshot-diff FILE` |
 
 All findings are **severity-ranked** (1=INFO, 2=WARN, 3=CRIT) and include **actionable suggestions**.
 
 --- 
 
-## 📐 Architecture
+##  Architecture
 
 The modular architecture of ROS 2 Triager ensures efficient and extensible diagnostic capabilities. It operates by leveraging a temporary `rclpy` node to non-intrusively inspect the live ROS 2 graph.
 
@@ -53,7 +53,7 @@ The modular architecture of ROS 2 Triager ensures efficient and extensible diagn
 
 --- 
 
-## ⚙️ Workflow
+## ️ Workflow
 
 ROS 2 Triager's workflow is designed for both interactive debugging and automated system health monitoring.
 
@@ -72,7 +72,7 @@ ROS 2 Triager's workflow is designed for both interactive debugging and automate
 
 --- 
 
-## ⚡ Quickstart
+##  Quickstart
 
 ### Prerequisites
 
@@ -125,28 +125,28 @@ ros2 triage --help
 
 --- 
 
-## 📊 Example Output
+##  Example Output
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   ros2 triage — Runtime Diagnostic Report
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-  🔴  DEAD TOPICS
+    DEAD TOPICS
   Topics with missing publishers or subscribers
   ────────────────────────────────────────────────────────────
   [CRIT]  /cmd_vel
          1 subscriber(s) [nav2_node] but 0 publishers — topic is UNPUBLISHED.
-         💡 Check if the node that should publish this topic is running:
+          Check if the node that should publish this topic is running:
             `ros2 node list`. Verify launch files include the publisher node.
 
-  ⚠️   QoS MISMATCHES
+  ️   QoS MISMATCHES
   Publisher ↔ Subscriber QoS incompatibilities
   ────────────────────────────────────────────────────────────
   [CRIT]  /sensor_data
          Reliability mismatch: publisher [sensor_node]=RELIABLE,
          subscriber [processor]=BEST_EFFORT. Messages will be DROPPED.
-         💡 Change processor subscription QoS to RELIABLE.
+          Change processor subscription QoS to RELIABLE.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   Summary: 2 CRITICAL  0 WARNING  0 INFO
@@ -178,7 +178,7 @@ ros2 triage --help
 
 --- 
 
-## 🤖 Demo Scenarios
+##  Demo Scenarios
 
 ### Dead Topic Demo
 
@@ -204,7 +204,7 @@ ros2 triage --no-dead-topics --no-tf
 
 --- 
 
-## ⚙️ CI Integration
+## ️ CI Integration
 
 Leverage `--json` output and exit codes to automate checks in your CI/CD pipelines:
 
@@ -220,7 +220,7 @@ Leverage `--json` output and exit codes to automate checks in your CI/CD pipelin
 
 --- 
 
-## 🧑‍💻 Development & Testing
+## ‍ Development & Testing
 
 ### Project Structure
 
@@ -256,6 +256,6 @@ python3 -m pytest test/ -v
 
 --- 
 
-## 📄 License
+##  License
 
 Apache 2.0
