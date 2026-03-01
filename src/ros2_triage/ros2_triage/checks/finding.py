@@ -1,13 +1,13 @@
-# Copyright 2024 darshan — Apache-2.0
+# Copyright 2024 darshan - Apache-2.0
 """
 Shared Finding dataclass and topic classification constants.
 
 classify_topic() returns one of:
-  'skip'     — always ignored (infra, Nav2 internal, ros2_control lifecycle)
-  'sim'      — Gazebo simulation topic  (severity cap: INFO in sim mode)
-  'viz'      — Rviz/visualisation topic (severity cap: INFO)
-  'critical' — known critical robot topic (severity: CRIT)
-  'normal'   — standard app topic (severity: WARN or CRIT by keyword)
+  'skip'     - always ignored (infra, Nav2 internal, ros2_control lifecycle)
+  'sim'      - Gazebo simulation topic  (severity cap: INFO in sim mode)
+  'viz'      - Rviz/visualisation topic (severity cap: INFO)
+  'critical' - known critical robot topic (severity: CRIT)
+  'normal'   - standard app topic (severity: WARN or CRIT by keyword)
 """
 
 from dataclasses import dataclass, field, asdict
@@ -33,7 +33,7 @@ class Finding:
 # ── Severity labels ──────────────────────────────────────────────────────────
 SEVERITY_LABEL = {1: 'INFO', 2: 'WARN', 3: 'CRIT'}
 
-# ── 1. Pure infrastructure — always skip ─────────────────────────────────────
+# ── 1. Pure infrastructure - always skip ─────────────────────────────────────
 NOISY_TOPICS = {
     '/rosout', '/parameter_events', '/clock',
     '/tf', '/tf_static',
@@ -95,7 +95,7 @@ NAV2_DEBUG_TOPICS = {
     '/map_metadata',
 }
 
-# ── 4. Interactive topics — published only when operator acts ─────────────────
+# ── 4. Interactive topics - published only when operator acts ─────────────────
 INTERACTIVE_TOPICS = {
     '/initialpose',
     '/goal_pose',
@@ -131,7 +131,7 @@ VISUALIZATION_SUFFIXES_TOPIC = (
     '/sensors/bumper_pointcloud', '/sensors/cliff_pointcloud',
 )
 
-# ── 7. Critical topics — missing counterpart is a real robot problem ──────────
+# ── 7. Critical topics - missing counterpart is a real robot problem ──────────
 CRITICAL_TOPICS = {
     '/cmd_vel', '/cmd_vel_nav', '/cmd_vel_mux', '/cmd_vel_smoothed',
     '/scan', '/scan_filtered', '/laser_scan',
@@ -181,7 +181,7 @@ def classify_topic(topic: str) -> str:
     if 'marker' in low or 'rviz' in low or 'visualization' in low:
         return 'viz'
 
-    # 6. Camera / image topics — Rviz displays on demand
+    # 6. Camera / image topics - Rviz displays on demand
     if any(s in low for s in ('/image_raw', '/image_color', '/image_rect',
                                '/camera_info', '/compressed', '/theora',
                                '/depth/image')):

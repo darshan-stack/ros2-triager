@@ -1,7 +1,36 @@
+# Colcon build artifacts
 build/
 install/
 log/
+
+# Python
 __pycache__/
 *.pyc
 *.pyo
+*.egg-info/
+.eggs/
+*.egg
+dist/
+
+# Virtual environments
+.venv/
+venv/
+ENV/
 .env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,9 +1,9 @@
-# Copyright 2024 darshan — Apache-2.0
+# Copyright 2024 darshan - Apache-2.0
 """
-graph_utils.py — Inspects the live ROS 2 graph using rclpy.
+graph_utils.py - Inspects the live ROS 2 graph using rclpy.
 
 Returns:
-  graph : dict  topic → {types, publishers, subscribers}
+  graph : dict  topic -> {types, publishers, subscribers}
   nodes : list  fully-qualified node names currently running
 """
 
@@ -19,12 +19,12 @@ def build_topic_graph(timeout_sec: float = 3.0) -> tuple:
 
     Parameters
     ----------
-    timeout_sec : float — seconds to wait for graph to propagate
+    timeout_sec : float - seconds to wait for graph to propagate
 
     Returns
     -------
     (graph, nodes)
-      graph : dict  topic → {"types": list[str],
+      graph : dict  topic -> {"types": list[str],
                               "publishers": list[TopicEndpointInfo],
                               "subscribers": list[TopicEndpointInfo]}
       nodes : list  sorted fully-qualified node names
