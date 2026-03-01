@@ -1,5 +1,5 @@
-# Copyright 2024 darshan — Apache-2.0
-"""Unit tests for checks/qos_check.py — no live ROS system required."""
+# Copyright 2024 darshan - Apache-2.0
+"""Unit tests for checks/qos_check.py - no live ROS system required."""
 
 import pytest
 from unittest.mock import MagicMock

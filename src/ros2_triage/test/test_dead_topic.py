@@ -1,7 +1,7 @@
-# Copyright 2024 darshan — Apache-2.0
+# Copyright 2024 darshan - Apache-2.0
 """
 Unit tests for checks/dead_topic.py
-Tests use synthetic graph data — no live ROS system required.
+Tests use synthetic graph data - no live ROS system required.
 """
 
 import pytest
@@ -41,11 +41,11 @@ class TestUnpublishedTopics:
         assert 'UNPUBLISHED' in findings[0].message
 
     def test_unknown_topic_gets_severity_2(self):
-        """Unknown custom topics get WARN (2) — any dead topic in a real robot warrants attention."""
+        """Unknown custom topics get WARN (2) - any dead topic in a real robot warrants attention."""
         graph = _graph('/my_custom_topic', pub_nodes=[], sub_nodes=['my_node'])
         findings = check_dead_topics(graph)
         assert len(findings) == 1
-        assert findings[0].severity == 2  # WARN — better safe than sorry on real robots
+        assert findings[0].severity == 2  # WARN - better safe than sorry on real robots
 
     def test_nav_keyword_gets_severity_2(self):
         graph = _graph('/navigation_status', pub_nodes=[], sub_nodes=['rviz'])
@@ -75,7 +75,7 @@ class TestUnsubscribedTopics:
 
 
 class TestHealthyTopics:
-    """Topics with both publishers and subscribers — no findings expected."""
+    """Topics with both publishers and subscribers - no findings expected."""
 
     def test_healthy_topic_no_findings(self):
         graph = _graph('/cmd_vel', pub_nodes=['joy_node'], sub_nodes=['base_node'])

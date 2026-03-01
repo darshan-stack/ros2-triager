@@ -1,6 +1,6 @@
-# Copyright 2024 darshan — Apache-2.0
+# Copyright 2024 darshan - Apache-2.0
 """
-hz_check.py — Measures topic publish rates and flags topics that are
+hz_check.py - Measures topic publish rates and flags topics that are
 publishing too slowly (or not at all) compared to a known expected rate.
 
 Without configuration, it flags topics that are publishing but at a
@@ -19,14 +19,14 @@ from rclpy.qos import QoSProfile, ReliabilityPolicy, DurabilityPolicy, HistoryPo
 
 from .finding import Finding, CRITICAL_TOPICS, classify_topic
 
-# Topics that are OUTPUTS / commands — silent when robot is idle, that's normal.
+# Topics that are OUTPUTS / commands - silent when robot is idle, that's normal.
 # We should NEVER flag these for being silent; only sensors should be rate-checked.
 COMMAND_TOPICS = (
     'cmd_vel', 'twist_cmd', 'cmd_vel_nav', 'cmd_vel_joy',
     'cmd_vel_teleop', 'cmd_vel_unstamped', 'cmd_vel_mux',
 )
 
-# Suffixes/prefixes that indicate slam / nav2 visualisation outputs — skip
+# Suffixes/prefixes that indicate slam / nav2 visualisation outputs - skip
 HZ_SKIP_SUFFIXES = (
     '/scan_visualization',   # slam_toolbox viz
     '/waypoints',            # nav2 waypoint marker array
@@ -40,12 +40,12 @@ HZ_SKIP_SUFFIXES = (
 )
 
 # Default minimum expected rates (Hz) by topic keyword
-# SENSOR topics only — never put command/output topics here
+# SENSOR topics only - never put command/output topics here
 RATE_RULES = {
     # keyword      (min_hz, severity, label)
     'scan':        (5.0,  3, 'lidar scan'),
     'laser':       (5.0,  3, 'laser scan'),
-    'pointcloud':  (2.0,  2, 'point cloud'),    # exact word — avoids /waypoints
+    'pointcloud':  (2.0,  2, 'point cloud'),    # exact word - avoids /waypoints
     'odom':        (10.0, 3, 'odometry'),
     'imu':         (10.0, 2, 'IMU data'),
     'image_raw':   (5.0,  2, 'camera image'),
@@ -101,7 +101,7 @@ class _RateCounter(Node):
 
     def _get_msg_class(self, type_str: str):
         """Dynamically import a message class from its type string."""
-        # e.g. "sensor_msgs/msg/LaserScan" → sensor_msgs.msg.LaserScan
+        # e.g. "sensor_msgs/msg/LaserScan" -> sensor_msgs.msg.LaserScan
         parts = type_str.replace('/', '.').rsplit('.', 1)
         if len(parts) != 2:
             raise ImportError(f'Cannot parse type: {type_str}')
@@ -124,10 +124,10 @@ def check_hz(graph: dict,
 
     Parameters
     ----------
-    graph        : dict  — from graph_utils.build_topic_graph()
-    expected_hz  : dict  — {topic: min_hz} from --expected-hz YAML
-    window       : float — measurement window in seconds
-    ignore_set   : set   — topics to skip
+    graph        : dict  - from graph_utils.build_topic_graph()
+    expected_hz  : dict  - {topic: min_hz} from --expected-hz YAML
+    window       : float - measurement window in seconds
+    ignore_set   : set   - topics to skip
 
     Returns
     -------
@@ -139,7 +139,7 @@ def check_hz(graph: dict,
     def _should_skip(topic: str) -> bool:
         """Return True if this topic should never be rate-checked."""
         low = topic.lower()
-        # Skip command/output topics — silent when robot is idle, that's normal
+        # Skip command/output topics - silent when robot is idle, that's normal
         if any(cmd in low for cmd in COMMAND_TOPICS):
             return True
         # Skip slam / nav2 visualization suffixes
@@ -222,7 +222,7 @@ def check_hz(graph: dict,
                 severity=severity if hz == 0 else max(1, severity - (1 if hz > min_hz * 0.5 else 0)),
                 message=(
                     f'{label} topic {topic} is publishing at '
-                    f'{actual_str} — expected ≥ {min_hz:.0f} Hz.'
+                    f'{actual_str} - expected ≥ {min_hz:.0f} Hz.'
                 ),
                 suggestion=(
                     f'Check the node publishing {topic} is not CPU-starved or crashed.\n'

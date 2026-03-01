@@ -11,7 +11,7 @@ setup(
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
     ],
-    install_requires=['setuptools', 'colorama'],
+    install_requires=['setuptools', 'rich', 'psutil', 'pyyaml'],
     zip_safe=True,
     maintainer='darshan',
     maintainer_email='user@example.com',

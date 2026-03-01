@@ -1,6 +1,6 @@
-# Copyright 2024 darshan — Apache-2.0
+# Copyright 2024 darshan - Apache-2.0
 """
-tf_check.py — Validates the TF tree structure.
+tf_check.py - Validates the TF tree structure.
 
 Checks:
   - Expected frames present (map, odom, base_link)
@@ -97,7 +97,7 @@ def check_tf(external_node: Node = None) -> list:
                     suggestion=(
                         f'Check that the node publishing the "{frame}" frame is '
                         f'running (e.g., robot_state_publisher for base_link, '
-                        f'map_server for map, nav2_amcl for odom→map).\n'
+                        f'map_server for map, nav2_amcl for odom->map).\n'
                         f'If your robot intentionally does not use a global '
                         f'\"map\" frame (pure odom-only operation), you can treat '
                         f'the missing \"map\" warning as informational or ignore '
@@ -107,7 +107,7 @@ def check_tf(external_node: Node = None) -> list:
                     ),
                 ))
 
-        # Check tf→odom→base_link chain connectivity
+        # Check tf->odom->base_link chain connectivity
         chain = ['map', 'odom', 'base_link']
         for i in range(len(chain) - 1):
             parent, child = chain[i], chain[i + 1]
@@ -118,10 +118,10 @@ def check_tf(external_node: Node = None) -> list:
                 except Exception as e:
                     findings.append(Finding(
                         check='tf',
-                        topic=f'tf:{parent}→{child}',
+                        topic=f'tf:{parent}->{child}',
                         severity=3,
                         message=(
-                            f'Cannot lookup transform {parent}→{child}: {e}. '
+                            f'Cannot lookup transform {parent}->{child}: {e}. '
                             f'The TF tree may have a broken link.'
                         ),
                         suggestion=(

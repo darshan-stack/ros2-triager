@@ -1,5 +1,5 @@
-# Copyright 2024 darshan — Apache-2.0
-"""Tests for the Finding dataclass — JSON serialization and field validation."""
+# Copyright 2024 darshan - Apache-2.0
+"""Tests for the Finding dataclass - JSON serialization and field validation."""
 
 import json
 import pytest

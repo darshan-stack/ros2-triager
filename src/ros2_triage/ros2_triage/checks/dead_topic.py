@@ -1,6 +1,6 @@
-# Copyright 2024 darshan — Apache-2.0
+# Copyright 2024 darshan - Apache-2.0
 """
-dead_topic.py — Detects topics with publishers but no subscribers (UNSUBSCRIBED)
+dead_topic.py - Detects topics with publishers but no subscribers (UNSUBSCRIBED)
 or subscribers but no publishers (UNPUBLISHED).
 
 Uses classify_topic() to eliminate false positives from Gazebo, Rviz,
@@ -13,9 +13,9 @@ from .finding import Finding, SEVERITY_LABEL, CRITICAL_TOPICS, classify_topic
 def _severity(topic: str, classification: str) -> int:
     """
     Severity based on topic classification:
-      critical → 3 (real robot control / sensor pipeline broken)
-      normal   → 2 (application topic with no counterpart)
-      sim/viz  → 1 (simulation or visualisation artefact — informational only)
+      critical -> 3 (real robot control / sensor pipeline broken)
+      normal   -> 2 (application topic with no counterpart)
+      sim/viz  -> 1 (simulation or visualisation artefact - informational only)
     """
     if classification == 'critical':
         return 3
@@ -24,7 +24,7 @@ def _severity(topic: str, classification: str) -> int:
 
     # Keyword heuristics for 'normal' topics
     low = topic.lower()
-    # Strong control/sensor keywords → raise to WARNING
+    # Strong control/sensor keywords -> raise to WARNING
     STRONG_KEYWORDS = ('cmd_vel', 'twist', 'velocity', 'odom', 'scan',
                        'lidar', 'laser', 'joint_state', 'imu', 'gps',
                        'battery', 'emergency', 'estop', 'safety', 'fault',
@@ -32,7 +32,7 @@ def _severity(topic: str, classification: str) -> int:
     if any(kw in low for kw in STRONG_KEYWORDS):
         return 2
 
-    return 2  # default all unknown topics to WARNING — important in real robots
+    return 2  # default all unknown topics to WARNING - important in real robots
 
 
 def check_dead_topics(graph: dict,
@@ -44,10 +44,10 @@ def check_dead_topics(graph: dict,
 
     Parameters
     ----------
-    graph          : dict — output of graph_utils.build_topic_graph()
-    skip_noisy     : bool — skip well-known infrastructure / sim / viz topics
-    extra_ignore   : set  — additional topics to ignore (from --ignore flag)
-    simulation_mode: bool — if True, downgrade sim/viz topics to INFO and skip them
+    graph          : dict - output of graph_utils.build_topic_graph()
+    skip_noisy     : bool - skip well-known infrastructure / sim / viz topics
+    extra_ignore   : set  - additional topics to ignore (from --ignore flag)
+    simulation_mode: bool - if True, downgrade sim/viz topics to INFO and skip them
 
     Returns
     -------
@@ -87,7 +87,7 @@ def check_dead_topics(graph: dict,
                 severity=sev,
                 message=(
                     f'{sub_count} subscriber(s) [{", ".join(sub_nodes)}] '
-                    f'but 0 publishers — topic is UNPUBLISHED.'
+                    f'but 0 publishers - topic is UNPUBLISHED.'
                 ),
                 suggestion=_unpublished_suggestion(topic, sub_nodes),
                 extra={'classification': cls,
@@ -100,7 +100,7 @@ def check_dead_topics(graph: dict,
             sev = _severity(topic, cls)
 
             # Sim / viz publishers with no subscriber are almost never bugs
-            # in real projects — downgrade to INFO so they don't pollute report
+            # in real projects - downgrade to INFO so they don't pollute report
             if cls in ('sim', 'viz') and not simulation_mode:
                 sev = 1
 
@@ -110,7 +110,7 @@ def check_dead_topics(graph: dict,
                 severity=sev,
                 message=(
                     f'{pub_count} publisher(s) [{", ".join(pub_nodes)}] '
-                    f'but 0 subscribers — topic is UNSUBSCRIBED.'
+                    f'but 0 subscribers - topic is UNSUBSCRIBED.'
                 ),
                 suggestion=_unsubscribed_suggestion(topic, pub_nodes, cls),
                 extra={'classification': cls,
@@ -176,10 +176,10 @@ def _unsubscribed_suggestion(topic: str, pub_nodes: list, cls: str) -> str:
     if cls in ('sim', 'viz'):
         return (
             f'{topic} is a simulation/visualisation topic with no current listener. '
-            'This is usually harmless — Rviz or other tools may subscribe on demand.'
+            'This is usually harmless - Rviz or other tools may subscribe on demand.'
         )
     if cls == 'skip':
-        return 'Infrastructure topic — this finding should not normally appear.'
+        return 'Infrastructure topic - this finding should not normally appear.'
     low = topic.lower()
     if 'scan' in low or 'laser' in low:
         return (
@@ -258,7 +258,7 @@ def _pairwise_topic_family_findings(graph: dict) -> list:
 
         results.append(Finding(
             check='dead_topics',
-            topic=f'{label}:{pub_topic}→{sub_topic}',
+            topic=f'{label}:{pub_topic}->{sub_topic}',
             severity=severity,
             message=(
                 f'{label.capitalize()} appears to be PUBLISHED on {pub_topic} '

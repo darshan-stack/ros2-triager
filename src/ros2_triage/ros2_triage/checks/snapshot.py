@@ -1,6 +1,6 @@
-# Copyright 2024 darshan — Apache-2.0
+# Copyright 2024 darshan - Apache-2.0
 """
-snapshot.py — Save a known-good system state and diff against it later.
+snapshot.py - Save a known-good system state and diff against it later.
 
 Workflow:
   # When robot works correctly:
@@ -80,7 +80,7 @@ def diff_snapshot(graph: dict,
 
     Returns
     -------
-    list[Finding] — changes since the snapshot
+    list[Finding] - changes since the snapshot
     """
     ignore_set = ignore_set or set()
     findings = []
@@ -167,7 +167,7 @@ def diff_snapshot(graph: dict,
                 severity=sev,
                 message=(
                     f'Topic {topic}: publishers dropped from '
-                    f'{old_pub} → {cur_pub} since snapshot ({snap_time}).'
+                    f'{old_pub} -> {cur_pub} since snapshot ({snap_time}).'
                 ),
                 suggestion=(
                     f'Node(s) that were publishing {topic} have stopped.\n'

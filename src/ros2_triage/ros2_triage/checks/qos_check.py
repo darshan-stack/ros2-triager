@@ -1,11 +1,11 @@
-# Copyright 2024 darshan — Apache-2.0
+# Copyright 2024 darshan - Apache-2.0
 """
-qos_check.py — Detects QoS incompatibilities between publishers and
+qos_check.py - Detects QoS incompatibilities between publishers and
 subscribers sharing a topic.
 
 Checks:
-  - Reliability mismatch  (RELIABLE pub ↔ BEST_EFFORT sub, or vice versa)
-  - Durability mismatch   (TRANSIENT_LOCAL pub ↔ VOLATILE sub, or vice versa)
+  - Reliability mismatch  (RELIABLE pub <-> BEST_EFFORT sub, or vice versa)
+  - Durability mismatch   (TRANSIENT_LOCAL pub <-> VOLATILE sub, or vice versa)
 """
 
 from rclpy.qos import ReliabilityPolicy, DurabilityPolicy
@@ -36,7 +36,7 @@ def _reliability_compat(pub_rel, sub_rel) -> bool:
         p = ReliabilityPolicy(pub_rel)
         s = ReliabilityPolicy(sub_rel)
     except Exception:
-        return True  # can't determine → skip
+        return True  # can't determine -> skip
 
     if p == ReliabilityPolicy.BEST_EFFORT and s == ReliabilityPolicy.RELIABLE:
         return False
@@ -61,13 +61,13 @@ def _durability_compat(pub_dur, sub_dur) -> bool:
 
 def check_qos(graph: dict, ignore_set: set = None) -> list:
     """
-    For each topic, compare every publisher↔subscriber QoS pair and
+    For each topic, compare every publisher<->subscriber QoS pair and
     report incompatibilities.
 
     Parameters
     ----------
-    graph      : dict — output of graph_utils.build_topic_graph()
-    ignore_set : set  — additional topics to skip (from --ignore flag)
+    graph      : dict - output of graph_utils.build_topic_graph()
+    ignore_set : set  - additional topics to skip (from --ignore flag)
 
     Returns
     -------
@@ -81,7 +81,7 @@ def check_qos(graph: dict, ignore_set: set = None) -> list:
         if topic in ignore_set:
             continue
 
-        # Skip infra / sim / viz topics — QoS mismatches there don't matter
+        # Skip infra / sim / viz topics - QoS mismatches there don't matter
         cls = classify_topic(topic)
         if cls in ('skip', 'sim', 'viz'):
             continue

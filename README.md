@@ -7,7 +7,7 @@
 
 --- 
 
-##  Key Differentiators & Novelty
+## Key Differentiators & Novelty
 
 ROS 2 Triager stands out by focusing on **dynamic runtime analysis**, offering capabilities crucial for maintaining the health and performance of complex robotic deployments. Its novel features provide unparalleled insight and automation potential:
 
@@ -19,24 +19,43 @@ ROS 2 Triager stands out by focusing on **dynamic runtime analysis**, offering c
 
 --- 
 
-##  Features
+## Features
 
 ROS 2 Triager provides a comprehensive suite of checks to ensure the robustness of your robotic applications:
 
+### Core Checks
+
 | Check | What it finds | Flag |
 |-------|---------------|------|
-|  **Dead Topics** | Topics with publishers but no subscribers (or vice versa), indicating communication breakdowns. | `--dead-topics` / `--no-dead-topics` |
-| ️ **QoS Mismatches** | Incompatible Quality of Service settings (e.g., reliability, durability) between publishers and subscribers, leading to message loss. | `--qos` / `--no-qos` |
-|  **TF Tree Issues** | Missing frames, broken transform chains, or inconsistencies in the robot's coordinate transformation tree. | `--tf` / `--no-tf` |
-| ⏱️ **Hz Rate Check** | Anomalies in topic publishing rates, flagging topics that are slower than expected. | `--check-hz` |
-|  **Expected Nodes** | Deviations from a predefined list of expected running nodes, identifying missing or rogue processes. | `--expected YAML_FILE` |
-|  **Graph Drift** | Changes in the ROS 2 graph structure compared to a saved baseline snapshot. | `--snapshot-diff FILE` |
+| **Dead Topics** | Topics with publishers but no subscribers (or vice versa), indicating communication breakdowns. | `--dead-topics` / `--no-dead-topics` |
+| **QoS Mismatches** | Incompatible Quality of Service settings (e.g., reliability, durability) between publishers and subscribers, leading to message loss. | `--qos` / `--no-qos` |
+| **TF Tree Issues** | Missing frames, broken transform chains, or inconsistencies in the robot's coordinate transformation tree. | `--tf` / `--no-tf` |
+| **Hz Rate Check** | Anomalies in topic publishing rates, flagging topics that are slower than expected. | `--check-hz` |
+| **Expected Nodes** | Deviations from a predefined list of expected running nodes, identifying missing or rogue processes. | `--expected YAML_FILE` |
+| **Graph Drift** | Changes in the ROS 2 graph structure compared to a saved baseline snapshot. | `--snapshot-diff FILE` |
+
+### Advanced Diagnostics
+
+| Check | What it finds | Flag |
+|-------|---------------|------|
+| **Latency Analysis** | Message timing and jitter (T_arrival - T_header_stamp) for stamped messages. | `--check-latency` |
+| **DDS Domain Probe** | Port conflicts, domain mismatches, multicast configuration issues. | `--check-dds` |
+| **Correlation Engine** | Root cause analysis using multi-signal correlation (graph + OS + logs). | `--correlate` |
+
+### Visualization & Monitoring
+
+| Feature | Description | Flag |
+|---------|-------------|------|
+| **Rich TUI** | Enhanced terminal output with colors and panels (requires `rich`). | `--rich` / `--no-rich` |
+| **Interactive Mode** | Keyboard-navigable dashboard for exploring findings. | `--interactive` |
+| **Watch Mode** | Live monitoring with auto-refresh. | `--watch` |
+| **Simulation Mode** | Suppress Gazebo/Rviz/visualization topics. | `--simulation` |
 
 All findings are **severity-ranked** (1=INFO, 2=WARN, 3=CRIT) and include **actionable suggestions**.
 
 --- 
 
-##  Architecture
+## Architecture
 
 The modular architecture of ROS 2 Triager ensures efficient and extensible diagnostic capabilities. It operates by leveraging a temporary `rclpy` node to non-intrusively inspect the live ROS 2 graph.
 
@@ -53,7 +72,7 @@ The modular architecture of ROS 2 Triager ensures efficient and extensible diagn
 
 --- 
 
-## ️ Workflow
+## Workflow
 
 ROS 2 Triager's workflow is designed for both interactive debugging and automated system health monitoring.
 
@@ -72,7 +91,7 @@ ROS 2 Triager's workflow is designed for both interactive debugging and automate
 
 --- 
 
-##  Quickstart
+## Quickstart
 
 ### Prerequisites
 
@@ -119,38 +138,50 @@ ros2 triage --snapshot-diff healthy_baseline.json
 # Live monitoring mode (refreshes every 5 seconds)
 ros2 triage --watch
 
+# Advanced: Check message latency and jitter
+ros2 triage --check-latency --latency-window 5.0
+
+# Advanced: Probe DDS domain for conflicts
+ros2 triage --check-dds
+
+# Advanced: Enable root cause analysis
+ros2 triage --correlate
+
+# Advanced: Interactive TUI dashboard
+ros2 triage --interactive
+
 # Help
 ros2 triage --help
 ```
 
 --- 
 
-##  Example Output
+## Example Output
 
 ```
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  ros2 triage — Runtime Diagnostic Report
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+============================================================
+  ros2 triage - Runtime Diagnostic Report
+============================================================
 
     DEAD TOPICS
   Topics with missing publishers or subscribers
-  ────────────────────────────────────────────────────────────
+  ------------------------------------------------------------
   [CRIT]  /cmd_vel
-         1 subscriber(s) [nav2_node] but 0 publishers — topic is UNPUBLISHED.
+         1 subscriber(s) [nav2_node] but 0 publishers - topic is UNPUBLISHED.
           Check if the node that should publish this topic is running:
             `ros2 node list`. Verify launch files include the publisher node.
 
-  ️   QoS MISMATCHES
-  Publisher ↔ Subscriber QoS incompatibilities
-  ────────────────────────────────────────────────────────────
+    QoS MISMATCHES
+  Publisher <-> Subscriber QoS incompatibilities
+  ------------------------------------------------------------
   [CRIT]  /sensor_data
          Reliability mismatch: publisher [sensor_node]=RELIABLE,
          subscriber [processor]=BEST_EFFORT. Messages will be DROPPED.
           Change processor subscription QoS to RELIABLE.
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+============================================================
   Summary: 2 CRITICAL  0 WARNING  0 INFO
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+============================================================
 ```
 
 ### JSON output (`--json`)
@@ -167,7 +198,7 @@ ros2 triage --help
           "check": "dead_topics",
           "topic": "/cmd_vel",
           "severity": 3,
-          "message": "1 subscriber(s) [nav2_node] but 0 publishers — topic is UNPUBLISHED.",
+          "message": "1 subscriber(s) [nav2_node] but 0 publishers - topic is UNPUBLISHED.",
           "suggestion": "Check if the node that should publish this topic is running..."
         }
       ]
@@ -178,33 +209,7 @@ ros2 triage --help
 
 --- 
 
-##  Demo Scenarios
-
-### Dead Topic Demo
-
-```bash
-# Terminal 1: Launch nodes with intentional dead topics
-ros2 launch ros2_triage dead_topic_demo.launch.py
-
-# Terminal 2: Run triage
-ros2 triage --no-qos --no-tf
-```
-
-Expected: `/cmd_vel` flagged as UNPUBLISHED (severity 3), `/sensor_data` flagged as UNSUBSCRIBED.
-
-### QoS Mismatch Demo
-
-```bash
-# See demo/qos_mismatch_demo.launch.py for one-liner commands
-# Terminal 1: RELIABLE publisher on /qos_demo
-# Terminal 2: BEST_EFFORT subscriber on /qos_demo
-# Terminal 3:
-ros2 triage --no-dead-topics --no-tf
-```
-
---- 
-
-## ️ CI Integration
+## CI Integration
 
 Leverage `--json` output and exit codes to automate checks in your CI/CD pipelines:
 
@@ -220,30 +225,36 @@ Leverage `--json` output and exit codes to automate checks in your CI/CD pipelin
 
 --- 
 
-## ‍ Development & Testing
+## Development & Testing
 
 ### Project Structure
 
 ```
 ros2_triage/
-├── command/
-│   └── triage.py          # TriageCommand — main CLI entry point
-├── checks/
-│   ├── finding.py         # Finding dataclass + severity constants
-│   ├── graph_utils.py     # rclpy topic graph snapshot
-│   ├── dead_topic.py      # Dead publisher/subscriber detection
-│   ├── qos_check.py       # QoS reliability/durability mismatch
-│   ├── tf_check.py        # TF tree frame connectivity
-│   ├── hz_check.py        # Topic rate anomaly check (NEW)
-│   └── node_check.py      # Missing/unexpected node check (NEW)
-├── reporter.py            # Human (colorama) + JSON output
-demo/
-├── dead_topic_demo.launch.py
-└── qos_mismatch_demo.launch.py
+|-- command/
+|   |-- triage.py          # TriageCommand - main CLI entry point
+|-- checks/
+|   |-- finding.py         # Finding dataclass + severity constants
+|   |-- graph_utils.py     # rclpy topic graph snapshot
+|   |-- dead_topic.py      # Dead publisher/subscriber detection
+|   |-- qos_check.py       # QoS reliability/durability mismatch
+|   |-- tf_check.py        # TF tree frame connectivity
+|   |-- hz_check.py        # Topic rate anomaly check
+|   |-- node_check.py      # Missing/unexpected node check
+|   |-- snapshot.py        # Graph state save/diff
+|   |-- latency_engine.py  # Message timing analysis
+|   |-- dds_probe.py       # DDS domain conflict detection
+|-- correlation_engine.py  # Multi-signal root cause analysis
+|-- interactive_tui.py     # Keyboard-navigable Rich TUI
+|-- reporter.py            # Human (Rich/colorama) + JSON output
 test/
-├── test_dead_topic.py
-├── test_qos_check.py
-└── test_finding.py
+|-- test_dead_topic.py
+|-- test_qos_check.py
+|-- test_finding.py
+|-- test_correlation_engine.py
+|-- test_latency_engine.py
+|-- test_dds_probe.py
+|-- test_reporter.py
 ```
 
 ### Running Tests
@@ -256,6 +267,6 @@ python3 -m pytest test/ -v
 
 --- 
 
-##  License
+## License
 
 Apache 2.0

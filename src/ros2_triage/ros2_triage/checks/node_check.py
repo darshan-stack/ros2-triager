@@ -1,6 +1,6 @@
-# Copyright 2024 darshan — Apache-2.0
+# Copyright 2024 darshan - Apache-2.0
 """
-node_check.py — Detects expected nodes that are NOT running.
+node_check.py - Detects expected nodes that are NOT running.
 
 Load an expected-nodes YAML file and compare against the live ROS 2
 node list. Reports missing nodes with severity 3 (CRIT) and unexpected
@@ -90,9 +90,9 @@ def check_nodes(expected_yaml: Optional[str] = None,
 
     Parameters
     ----------
-    expected_yaml : str  — path to expected_nodes YAML file
-    running_nodes : list — pre-fetched node list (avoids double rclpy.init)
-    ignore_set    : set  — nodes to skip
+    expected_yaml : str  - path to expected_nodes YAML file
+    running_nodes : list - pre-fetched node list (avoids double rclpy.init)
+    ignore_set    : set  - nodes to skip
 
     Returns
     -------
