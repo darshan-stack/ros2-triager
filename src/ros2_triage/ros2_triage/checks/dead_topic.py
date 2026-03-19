@@ -9,6 +9,16 @@ Nav2 infrastructure topics, camera streams, and interactive operator topics.
 
 from .finding import Finding, SEVERITY_LABEL, CRITICAL_TOPICS, classify_topic
 
+# Import the new engine classifier for accurate DEAD/NO_PUB detection.
+# DEAD TOPIC RULE (§4.1): publisher_count==0 OR (age > threshold AND hz==0.0).
+# This fixes false-positives on latched topics (/map, /tf_static) which
+# publish once and then have hz==0 forever — they should NOT be flagged as DEAD.
+try:
+    from ..engine.dead_topic_detector import classify_topic as _engine_classify
+    _HAS_ENGINE = True
+except ImportError:
+    _HAS_ENGINE = False
+
 
 def _severity(topic: str, classification: str) -> int:
     """

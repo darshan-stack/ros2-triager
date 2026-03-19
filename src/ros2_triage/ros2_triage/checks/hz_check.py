@@ -216,13 +216,14 @@ def check_hz(graph: dict,
 
         if hz < min_hz:
             actual_str = f'{hz:.1f} Hz' if hz > 0 else '0 Hz (SILENT)'
+            deviation_pct = abs(hz - min_hz) / min_hz * 100.0
             findings.append(Finding(
                 check='hz',
                 topic=topic,
                 severity=severity if hz == 0 else max(1, severity - (1 if hz > min_hz * 0.5 else 0)),
                 message=(
-                    f'{label} topic {topic} is publishing at '
-                    f'{actual_str} - expected ≥ {min_hz:.0f} Hz.'
+                    f'{label} topic {topic}: {actual_str} vs {min_hz:.1f} expected '
+                    f'({deviation_pct:.1f}% deviation).'
                 ),
                 suggestion=(
                     f'Check the node publishing {topic} is not CPU-starved or crashed.\n'

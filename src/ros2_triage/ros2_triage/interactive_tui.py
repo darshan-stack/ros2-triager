@@ -1,8 +1,14 @@
 # Copyright 2024 darshan - Apache-2.0
 """
-interactive_tui.py - Interactive Terminal User Interface
+interactive_tui.py - Interactive Terminal User Interface (DEPRECATED)
 
-Provides keyboard navigation for the Rich TUI dashboard:
+.. deprecated::
+    This module is superseded by the Textual-based TUI in ``ros2_triage.tui.app``.
+    Use ``ros2 triage tui`` to launch the new Textual TUI.
+    This file is kept for backwards compatibility only and may be removed in a
+    future release.
+
+Legacy Rich-based keyboard navigation TUI:
   - Arrow keys: Navigate between findings
   - Enter: Expand/collapse finding details
   - q: Quit
@@ -14,6 +20,12 @@ Provides keyboard navigation for the Rich TUI dashboard:
 
 Performance target: <50ms refresh rate
 """
+import warnings as _warnings
+_warnings.warn(
+    "interactive_tui.py is deprecated. Use 'ros2 triage tui' for the new Textual TUI.",
+    DeprecationWarning,
+    stacklevel=2,
+)
 
 import sys
 import time

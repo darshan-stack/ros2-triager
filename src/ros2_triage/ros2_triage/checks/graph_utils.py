@@ -12,6 +12,61 @@ import rclpy
 from rclpy.node import Node
 
 
+class InspectorNode(Node):
+    """
+    A longer-lived inspector node that can be reused across calls.
+    Adds richer graph query methods (§6.3).
+    """
+
+    def __init__(self, name: str = '_ros2_triage_inspector_'):
+        super().__init__(name)
+
+    def get_all_topics_with_info(self) -> dict:
+        """Returns {topic_name: {type, pub_count, sub_count}}"""
+        result = {}
+        for name, types in self.get_topic_names_and_types():
+            result[name] = {
+                "type": types[0] if types else "unknown",
+                "pub_count": self.count_publishers(name),
+                "sub_count": self.count_subscribers(name),
+            }
+        return result
+
+    def get_all_nodes_with_info(self) -> list[dict]:
+        """Returns [{name, namespace, pub_topics, sub_topics, services}]"""
+        result = []
+        for name, ns in self.get_node_names_and_namespaces():
+            try:
+                pubs = [
+                    t for t, _ in
+                    self.get_publisher_names_and_types_by_node(name, ns)
+                ]
+                subs = [
+                    t for t, _ in
+                    self.get_subscriber_names_and_types_by_node(name, ns)
+                ]
+                svcs = [
+                    s for s, _ in
+                    self.get_service_names_and_types_by_node(name, ns)
+                ]
+                result.append({
+                    "name": name,
+                    "namespace": ns,
+                    "pub_topics": pubs,
+                    "sub_topics": subs,
+                    "services": svcs,
+                })
+            except Exception:
+                result.append({
+                    "name": name,
+                    "namespace": ns,
+                    "pub_topics": [],
+                    "sub_topics": [],
+                    "services": [],
+                })
+        return result
+
+
 def build_topic_graph(timeout_sec: float = 3.0) -> tuple:
     """
     Spin a temporary node, wait for the graph to settle, then snapshot

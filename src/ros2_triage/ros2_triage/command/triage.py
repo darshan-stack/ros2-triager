@@ -12,6 +12,7 @@ New in v2:
   --snapshot-save FILE Save current state as baseline
   --snapshot-diff FILE Diff current state vs baseline
   --watch              Live monitoring mode (refreshes every N seconds)
+  tui                  Launch interactive Textual TUI dashboard
 """
 
 import sys
@@ -28,14 +29,19 @@ class TriageCommand(CommandExtension):
              slow topic rates, missing nodes, and graph drift vs baseline.
 
     Use --json for CI output. Use --watch for live monitoring.
+    Use 'tui' subcommand for interactive Textual TUI dashboard.
     """
 
     def add_arguments(self, parser, cli_name):
         parser.description = (
             'Analyse the live ROS 2 graph and report runtime problems.\n'
             'Smart filtering removes Gazebo/Rviz/Nav2 noise automatically.\n\n'
+            'Subcommands:\n'
+            '  tui                              # launch Textual TUI dashboard\n\n'
             'Examples:\n'
             '  ros2 triage                          # full check\n'
+            '  ros2 triage tui                      # interactive TUI\n'
+            '  ros2 triage tui --preflight          # headless preflight check\n'
             '  ros2 triage --simulation             # with Gazebo running\n'
             '  ros2 triage --check-hz               # + rate anomaly check\n'
             '  ros2 triage --expected nodes.yaml    # + missing node check\n'
@@ -44,6 +50,10 @@ class TriageCommand(CommandExtension):
             '  ros2 triage --watch                  # live refresh (Ctrl+C to exit)\n'
             '  ros2 triage --json                   # CI/CD JSON output\n'
         )
+
+        # ── TUI subcommand ────────────────────────────────────────────────
+        subparsers = parser.add_subparsers(dest='subcommand')
+        _add_tui_subcommand(subparsers)
 
         # ── Standard check toggles ────────────────────────────────────────
         parser.add_argument('--dead-topics', dest='check_dead_topics',
@@ -205,6 +215,10 @@ class TriageCommand(CommandExtension):
                 file=sys.stderr,
             )
             return 1
+
+        # Dispatch to TUI subcommand if requested
+        if getattr(args, 'subcommand', None) == 'tui':
+            return _run_tui(args)
 
         if args.watch:
             return self._watch_loop(args)
@@ -469,3 +483,115 @@ def _status(msg: str, json_mode: bool) -> None:
 
 def _warn(msg: str, json_mode: bool) -> None:
     print(f'    {msg}', file=sys.stderr)
+
+
+# ── TUI subcommand helpers ────────────────────────────────────────────────────
+
+def _add_tui_subcommand(subparsers) -> None:
+    """Register the 'tui' subparser under the main triage parser."""
+    tui_parser = subparsers.add_parser(
+        "tui", help="Launch interactive Textual TUI dashboard"
+    )
+    tui_parser.add_argument(
+        "--config", "-c", default=None,
+        help="Path to YAML config file (optional; zero-config if omitted)"
+    )
+    tui_parser.add_argument(
+        "--domain", "-d", type=int, default=0,
+        help="ROS_DOMAIN_ID to use (default: 0)"
+    )
+    tui_parser.add_argument(
+        "--preflight", action="store_true",
+        help="Run headless preflight check instead of launching TUI"
+    )
+    tui_parser.add_argument(
+        "--preflight-timeout", type=int, default=30,
+        dest="preflight_timeout",
+        help="Preflight timeout in seconds (default: 30)"
+    )
+
+
+def _run_tui(args) -> int:
+    """Launch the Textual TUI dashboard (or headless preflight check)."""
+    import os
+    import threading
+    import rclpy
+
+    os.environ["ROS_DOMAIN_ID"] = str(getattr(args, "domain", 0))
+    rclpy.init()
+    node = rclpy.create_node("_ros2_triager_node")
+
+    from ros2_triage.state.state_bus import StateBus
+    from ros2_triage.collectors.topic_collector import TopicCollector
+    from ros2_triage.collectors.tf_collector import TFCollector
+    from ros2_triage.collectors.node_collector import NodeCollector
+    from ros2_triage.collectors.diagnostic_collector import DiagnosticCollector
+    from ros2_triage.collectors.lifecycle_collector import LifecycleCollector
+    from ros2_triage.collectors.odom_map_collector import OdomMapCollector
+    from ros2_triage.config.config_manager import load_config
+    from ros2_triage.tui.app import TriagerApp
+
+    bus = StateBus()
+    config = load_config(getattr(args, "config", None))
+
+    # Start all collectors
+    collectors = [
+        TopicCollector(node, bus),
+        TFCollector(node, bus),
+        NodeCollector(node, bus),
+        DiagnosticCollector(node, bus),
+        LifecycleCollector(node, bus),
+        OdomMapCollector(node, bus),
+    ]
+    for c in collectors:
+        c.start()
+
+    # Spin rclpy in background thread
+    spin_thread = threading.Thread(
+        target=lambda: rclpy.spin(node), daemon=True
+    )
+    spin_thread.start()
+
+    if getattr(args, "preflight", False):
+        _run_preflight(bus, config, getattr(args, "preflight_timeout", 30))
+        # _run_preflight calls sys.exit(), so this is a safety return
+        return 0
+
+    try:
+        app = TriagerApp(bus, config)
+        app.run()
+    finally:
+        for c in collectors:
+            c.stop()
+        node.destroy_node()
+        try:
+            rclpy.shutdown()
+        except Exception:
+            pass
+
+    return 0
+
+
+def _run_preflight(bus, config: dict, timeout_sec: int) -> None:
+    """Run headless preflight check. Exits with 0=pass, 1=fail."""
+    import time
+    import sys
+    from ros2_triage.engine.health_scorer import compute_health
+
+    min_health = config.get("settings", {}).get("preflight_min_health", 80)
+    deadline = time.monotonic() + timeout_sec
+    print(f"Running preflight check (timeout: {timeout_sec}s, required: {min_health}/100)...")
+
+    while time.monotonic() < deadline:
+        score = compute_health(bus)
+        if score.overall >= min_health:
+            print(f"✔ PREFLIGHT PASSED — health score: {score.overall}/100")
+            sys.exit(0)
+        time.sleep(1.0)
+
+    score = compute_health(bus)
+    print(
+        f"✖ PREFLIGHT FAILED — timeout after {timeout_sec}s "
+        f"(final score: {score.overall}/100, required: {min_health}/100)"
+    )
+    sys.exit(1)
