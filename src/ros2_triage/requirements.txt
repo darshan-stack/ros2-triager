@@ -1,0 +1,17 @@
+# requirements.txt — ros2_triage v2
+# Install with: pip install -r requirements.txt
+# (or: pip install --break-system-packages -r requirements.txt  on Ubuntu apt-managed Python)
+
+# ── TUI ──────────────────────────────────────────────────────────────────────
+textual==0.70.0
+
+# ── Configuration ─────────────────────────────────────────────────────────────
+pydantic>=2.0.0
+pyyaml>=6.0
+
+# ── Graph analysis ────────────────────────────────────────────────────────────
+networkx>=3.0
+
+# ── Existing / optional ───────────────────────────────────────────────────────
+psutil>=5.9.0        # correlation engine process checks
+colorama>=0.4.6      # colored CLI output

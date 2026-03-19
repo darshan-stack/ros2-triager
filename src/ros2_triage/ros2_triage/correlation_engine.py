@@ -379,3 +379,48 @@ class CorrelationEngine:
             return max(signal_counts.items(), key=lambda x: x[1])[0]
         
         return 'unknown'
+
+    def correlate_from_bus(self, bus: "StateBus") -> list:
+        """
+        Run correlation analysis using live StateBus state (§7).
+        Returns list of hypothesis dicts:
+          {confidence, root_cause, affected, suggestion}
+        """
+        with bus._lock:
+            dead_topics = [t for t in bus.topics.values() if t.status == "DEAD"]
+            zombie_nodes = [n for n in bus.nodes.values() if n.is_zombie]
+            stale_tf = list(bus.tf.stale_frames)
+            diag_errors = [i for i in bus.diag.items.values() if i.level >= 2]
+
+        hypotheses = []
+
+        # Pattern: zombie node + dead topics → node crash likely
+        if zombie_nodes and dead_topics:
+            hypotheses.append({
+                "confidence": 0.85,
+                "root_cause": (
+                    f"Node(s) {[n.name for n in zombie_nodes]} appear crashed"
+                ),
+                "affected": [t.name for t in dead_topics],
+                "suggestion": "Check node logs: ros2 log or journalctl",
+            })
+
+        # Pattern: stale TF + dead odom → odometry pipeline broken
+        if stale_tf and any(t.name == "/odom" for t in dead_topics):
+            hypotheses.append({
+                "confidence": 0.9,
+                "root_cause": "Odometry pipeline broken — TF frames going stale",
+                "affected": stale_tf,
+                "suggestion": "Check wheel encoders and robot_state_publisher",
+            })
+
+        # Pattern: diagnostic errors → cross-reference with dead topics
+        for err in diag_errors:
+            hypotheses.append({
+                "confidence": 0.7,
+                "root_cause": f"Hardware issue: {err.hardware_id} — {err.message}",
+                "affected": [err.name],
+                "suggestion": "Check hardware driver and cable connections",
+            })
+
+        return sorted(hypotheses, key=lambda h: h["confidence"], reverse=True)

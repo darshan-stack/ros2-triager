@@ -204,27 +204,41 @@ def probe_domain(domain_id: int) -> DDSDomainInfo:
     )
 
 
-def scan_domains(domain_range: range = None) -> List[DDSDomainInfo]:
+def scan_domains(
+    domain_range: range = None,
+    max_domains: int | None = None,
+) -> List[DDSDomainInfo]:
     """
     Scan multiple DDS domains for activity.
-    
+
     Args:
-        domain_range: Range of domain IDs to scan (default: 0-10)
-        
+        domain_range: Range of domain IDs to scan (default: 0-10).
+                      Mutually exclusive with max_domains.
+        max_domains:  Convenience shorthand — scan the first N domain IDs
+                      (0 to max_domains-1) and always include the current
+                      ROS_DOMAIN_ID.
+
     Returns:
-        List of active domains
+        List of active DDSDomainInfo objects.
     """
     if domain_range is None:
-        domain_range = range(0, 11)
-    
+        if max_domains is not None:
+            # Build a range that covers 0..max_domains-1 AND the current domain.
+            current = get_ros_domain_id()
+            end = max(max_domains, current + 1)
+            domain_range = range(0, end)
+        else:
+            domain_range = range(0, 11)
+
     active_domains = []
-    
+
     for domain_id in domain_range:
         info = probe_domain(domain_id)
         if info.is_active:
             active_domains.append(info)
-    
+
     return active_domains
+
 
 
 def check_multicast_enabled() -> Tuple[bool, str]:

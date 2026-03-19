@@ -253,15 +253,16 @@ def print_json(findings: List[Finding],
         },
         # Context note: ros2-triage always reasons from the live ROS 2 graph
         # (topics, publishers, subscribers, TF frames) at the instant of the
-        # check. It does not observe the physical robot state directly, and it
-        # cannot account for nodes that have not started yet. This field
-        # mirrors the human-readable banner note for CI/automation users.
+        # check. It does not observe the physical robot state directly.
         'note': (
             'This report reflects the current ROS 2 graph only '
             '(publishers, subscribers, TF frames), not the robot\'s physical '
             'state. Remappings, namespaces, or nodes that start late can '
             'temporarily appear as findings until the graph settles.'
         ),
+        # Flat list for easy iteration by CI consumers / tests
+        'findings': [f.to_dict() for f in filtered],
+        # Grouped by check name for richer analysis
         'checks': [
             {
                 'name': check_name,
@@ -273,6 +274,7 @@ def print_json(findings: List[Finding],
     }
     stream.write(json.dumps(output, indent=2))
     stream.write('\n')
+
 
 
 # ── Rich output (preferred when available) ────────────────────────────────────

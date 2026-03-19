@@ -1,0 +1,78 @@
+/* theme.tcss — Textual CSS for ros2-triager */
+Screen {
+    background: $surface;
+}
+
+HealthBanner {
+    height: 5;
+    layout: horizontal;
+    padding: 0 1;
+}
+
+HealthCard {
+    border: tall $panel;
+    background: $panel;
+    height: 5;
+    width: 1fr;
+    padding: 0 1;
+    margin: 0 1;
+    content-align: center middle;
+}
+HealthCard.ok       { border: tall $success; }
+HealthCard.degraded { border: tall $warning; }
+HealthCard.critical { border: tall $error;   }
+
+DataTable {
+    height: 1fr;
+}
+DataTable > .datatable--row-hover {
+    background: $boost;
+}
+
+.status-ok     { color: $success; }
+.status-warn   { color: $warning; }
+.status-dead   { color: $error; text-style: bold; }
+.status-stale  { color: $warning; text-style: italic; }
+.status-zombie { color: $error; text-style: bold italic; }
+
+AlertsLog {
+    height: 1fr;
+    overflow-y: scroll;
+}
+.alert-error { background: $error 20%;   }
+.alert-warn  { background: $warning 20%; }
+
+TFTreeWidget Tree {
+    height: 1fr;
+}
+.stale-frame  { color: $warning; }
+.broken-frame { color: $error;   }
+
+PreflightPanel {
+    height: 1fr;
+    padding: 1 2;
+}
+.preflight-pass    { color: $success; }
+.preflight-fail    { color: $error;   }
+.preflight-pending { color: $warning; }
+
+OdomMapPanel {
+    height: 1fr;
+    padding: 1 2;
+}
+
+GraphPanel {
+    height: 1fr;
+    padding: 1 2;
+}
+
+InspectPanel {
+    height: 1fr;
+    padding: 1 2;
+    border: tall $panel;
+}
+
+SparklineWidget {
+    height: 3;
+    width: 1fr;
+}
