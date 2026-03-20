@@ -54,6 +54,20 @@ class TriagerApp(App):
         super().__init__()
         self.bus = bus
         self.config = config or {}
+        settings = self.config.get("settings", {}) or {}
+        self._dead_topic_threshold_sec: float = float(
+            settings.get("dead_topic_threshold_sec", 5.0)
+        )
+
+        # Fast lookup for topic monitoring config.
+        # Keys prefer the actual ROS topic name (`topic`), but fall back to `name`.
+        self._topic_cfg_by_name: dict[str, dict] = {}
+        for tc in self.config.get("monitored_topics", []) or []:
+            if not isinstance(tc, dict):
+                continue
+            key = tc.get("topic") or tc.get("name")
+            if isinstance(key, str) and key:
+                self._topic_cfg_by_name[key] = tc
 
     def compose(self) -> ComposeResult:
         yield Header()
@@ -85,20 +99,36 @@ class TriagerApp(App):
         self._refresh_timer = self.set_interval(self._refresh_interval, self._refresh_all)
 
     def _refresh_all(self) -> None:
-        # Recompute health score
+        # Apply config-driven expected rates and classify topics.
+        # Health scoring depends on `t.status` and `t.is_critical`.
+        with self.bus._lock:
+            for t in self.bus.topics.values():
+                tc = self._topic_cfg_by_name.get(t.name)
+                if tc:
+                    # These fields are used by engine classifiers + health scorer.
+                    exp = tc.get("expected_hz", None)
+                    t.expected_hz = float(exp) if exp is not None else None
+                    t.is_critical = bool(tc.get("critical", False))
+                    dead_thr = tc.get(
+                        "dead_threshold_sec",
+                        self._dead_topic_threshold_sec,
+                    )
+                else:
+                    dead_thr = self._dead_topic_threshold_sec
+
+                t.status = classify_topic(
+                    t,
+                    dead_threshold_sec=float(dead_thr),
+                )
+
+            # Reclassify zombie nodes based on updated topic statuses.
+            for n in self.bus.nodes.values():
+                n.is_zombie = is_zombie(n, self.bus.topics)
+
+        # Recompute health score (after topic/node reclassification)
         score = compute_health(self.bus)
         with self.bus._lock:
             self.bus.health = score
-
-        # Reclassify all topics
-        with self.bus._lock:
-            for t in self.bus.topics.values():
-                t.status = classify_topic(t)
-
-        # Reclassify zombie nodes
-        with self.bus._lock:
-            for n in self.bus.nodes.values():
-                n.is_zombie = is_zombie(n, self.bus.topics)
 
         # Notify all widgets to refresh
         try:
@@ -142,6 +172,8 @@ class TriagerApp(App):
     def action_preflight(self) -> None:
         try:
             panel = self.query_one(PreflightPanel)
+            # Ensure classification reflects the latest config/graph state.
+            self._refresh_all()
             panel.run_check()
             self.action_switch_tab("preflight")
         except Exception:
