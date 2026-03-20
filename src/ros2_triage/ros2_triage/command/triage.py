@@ -379,21 +379,14 @@ class TriageCommand(CommandExtension):
 
         # ── Interactive mode ──────────────────────────────────────────────
         if args.interactive:
-            try:
-                from ros2_triage.interactive_tui import InteractiveTUI
-                tui = InteractiveTUI(
-                    refresh_callback=lambda: self._run_once(args)
-                )
-                tui.update_data(
-                    findings=all_findings,
-                    hypotheses=hypotheses,
-                    system_metrics={}
-                )
-                tui.run(refresh_interval=args.watch_interval if hasattr(args, 'watch_interval') else 5.0)
-                return 0
-            except Exception as e:
-                _warn(f'Interactive mode failed: {e}', args.json)
-                # Fall through to normal output
+            # Policy: Textual-only TUI. `interactive_tui.py` remains for
+            # backwards compatibility, but we no longer start its Rich UI.
+            _warn(
+                "DEPRECATED: Rich interactive UI is disabled; launching "
+                "Textual TUI instead (`ros2 triage tui`).",
+                args.json,
+            )
+            return _run_tui(args)
 
         # ── Report ────────────────────────────────────────────────────────
         if args.json:

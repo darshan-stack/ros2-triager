@@ -20,7 +20,6 @@ Example:
 
 import os
 import re
-import subprocess
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Tuple
 from pathlib import Path
@@ -131,39 +130,60 @@ class LogGrepper:
         (r'qos mismatch|incompatible qos', 'qos_incompatibility', 0.9),
     ]
     
+    LOG_PATHS = [
+        "/var/log/syslog",
+        "/var/log/messages",
+        "/var/log/system.log",
+    ]
+
+    def _read_recent_text(
+        self,
+        paths: List[str],
+        *,
+        max_bytes: int = 200_000,
+    ) -> str:
+        """Best-effort log tail reader without subprocess calls."""
+        chunks: list[str] = []
+        for path in paths:
+            if not os.path.exists(path):
+                continue
+            try:
+                size = os.path.getsize(path)
+                start = max(0, size - max_bytes)
+                with open(path, "rb") as f:
+                    f.seek(start)
+                    data = f.read().decode("utf-8", errors="ignore")
+                chunks.append(data)
+            except Exception:
+                continue
+        return "\n".join(chunks)
+
     def search_logs(self, node_name: str, max_lines: int = 100) -> List[Tuple[str, float]]:
         """
         Search system logs for errors related to a node.
         Returns list of (error_type, confidence) tuples.
         """
         findings = []
-        
-        # Try journalctl first (systemd systems)
-        try:
-            result = subprocess.run(
-                ['journalctl', '-n', str(max_lines), '--no-pager'],
-                capture_output=True,
-                text=True,
-                timeout=2
-            )
-            log_text = result.stdout.lower()
-            
-            # Filter for lines mentioning the node
-            relevant_lines = [
-                line for line in log_text.split('\n')
-                if node_name.lower() in line
-            ]
-            
-            # Search for error patterns
-            for pattern, error_type, confidence in self.ERROR_PATTERNS:
-                for line in relevant_lines:
-                    if re.search(pattern, line, re.IGNORECASE):
-                        findings.append((error_type, confidence))
-                        break  # Only count each pattern once
-                        
-        except (subprocess.TimeoutExpired, FileNotFoundError, PermissionError):
-            pass
-        
+
+        log_text = self._read_recent_text(self.LOG_PATHS, max_bytes=250_000)
+        if not log_text:
+            return findings
+
+        node_lower = node_name.lower()
+        relevant_lines = [
+            line.lower()
+            for line in log_text.splitlines()
+            if node_lower in line.lower()
+        ]
+        if max_lines is not None and max_lines > 0:
+            relevant_lines = relevant_lines[-max_lines:]
+
+        for pattern, error_type, confidence in self.ERROR_PATTERNS:
+            for line in relevant_lines:
+                if re.search(pattern, line, re.IGNORECASE):
+                    findings.append((error_type, confidence))
+                    break  # Only count each pattern once
+
         return findings
 
 

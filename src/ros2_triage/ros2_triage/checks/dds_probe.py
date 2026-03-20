@@ -15,11 +15,17 @@ Detects:
 import os
 import socket
 import struct
-import subprocess
 from dataclasses import dataclass
 from typing import Dict, List, Optional, Tuple
 
 from .finding import Finding
+
+try:
+    import psutil
+    _HAS_PSUTIL = True
+except ImportError:  # pragma: no cover - optional dependency
+    psutil = None
+    _HAS_PSUTIL = False
 
 
 @dataclass
@@ -126,50 +132,41 @@ def check_port_in_use(port: int, protocol: str = 'udp') -> bool:
 
 def get_port_processes(port: int) -> List[str]:
     """Get list of processes using a specific port."""
-    processes = []
-    
+    # Policy: avoid subprocess calls. Use psutil if available; otherwise
+    # return an empty list (we still report other DDS findings).
+    if not _HAS_PSUTIL:
+        return []
+
+    processes: set[str] = set()
     try:
-        # Try netstat first
-        result = subprocess.run(
-            ['netstat', '-tulpn'],
-            capture_output=True,
-            text=True,
-            timeout=5
-        )
-        
-        for line in result.stdout.split('\n'):
-            if f':{port} ' in line or f':{port}/' in line:
-                # Extract process info
-                parts = line.split()
-                if len(parts) >= 7:
-                    process_info = parts[-1]  # e.g., "12345/ros2"
-                    if process_info != '-':
-                        processes.append(process_info)
-    except (subprocess.TimeoutExpired, FileNotFoundError):
-        pass
-    
-    if not processes:
-        try:
-            # Try ss as fallback
-            result = subprocess.run(
-                ['ss', '-tulpn'],
-                capture_output=True,
-                text=True,
-                timeout=5
-            )
-            
-            for line in result.stdout.split('\n'):
-                if f':{port} ' in line or f':{port}]' in line:
-                    # Extract process info from ss output
-                    if 'users:' in line:
-                        start = line.find('users:')
-                        end = line.find(')', start)
-                        if end > start:
-                            processes.append(line[start:end+1])
-        except (subprocess.TimeoutExpired, FileNotFoundError):
-            pass
-    
-    return processes
+        for kind in ('udp', 'tcp'):
+            try:
+                conns = psutil.net_connections(kind=kind)
+            except Exception:
+                conns = []
+            for conn in conns:
+                laddr = conn.laddr
+                pid = conn.pid
+                if pid is None:
+                    continue
+                port_num: int | None = None
+                if hasattr(laddr, "port"):
+                    port_num = laddr.port  # type: ignore[assignment]
+                elif isinstance(laddr, tuple) and len(laddr) >= 2:
+                    maybe_port = laddr[1]
+                    if isinstance(maybe_port, int):
+                        port_num = maybe_port
+                if port_num != port:
+                    continue
+                try:
+                    processes.add(psutil.Process(pid).name())
+                except Exception:
+                    # AccessDenied or process already exited: ignore.
+                    continue
+    except Exception:
+        return []
+
+    return list(processes)
 
 
 def probe_domain(domain_id: int) -> DDSDomainInfo:
@@ -248,35 +245,21 @@ def check_multicast_enabled() -> Tuple[bool, str]:
     Returns:
         Tuple of (is_enabled, details)
     """
+    # Policy: avoid subprocess calls. Best-effort test by joining a multicast
+    # group. This doesn't guarantee DDS discovery will succeed, but it
+    # provides a reasonable indicator without shelling out.
+    group = "224.0.0.1"
     try:
-        # Check for multicast route
-        result = subprocess.run(
-            ['ip', 'route', 'show', 'table', 'all'],
-            capture_output=True,
-            text=True,
-            timeout=5
-        )
-        
-        has_multicast = '224.0.0.0/4' in result.stdout or 'multicast' in result.stdout.lower()
-        
-        if has_multicast:
-            return True, 'Multicast routing configured'
-        
-        # Check interface multicast flags
-        result2 = subprocess.run(
-            ['ip', 'link', 'show'],
-            capture_output=True,
-            text=True,
-            timeout=5
-        )
-        
-        if 'MULTICAST' in result2.stdout:
-            return True, 'Multicast enabled on interfaces'
-        
-        return False, 'No multicast configuration found'
-        
-    except (subprocess.TimeoutExpired, FileNotFoundError) as e:
-        return False, f'Could not check multicast: {e}'
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
+        try:
+            sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, struct.pack("b", 1))
+            mreq = struct.pack("4s4s", socket.inet_aton(group), socket.inet_aton("0.0.0.0"))
+            sock.setsockopt(socket.IPPROTO_IP, socket.IP_ADD_MEMBERSHIP, mreq)
+            return True, "Multicast group join succeeded"
+        finally:
+            sock.close()
+    except Exception as e:
+        return False, f"Multicast group join failed: {e}"
 
 
 def get_dds_implementation() -> Optional[str]:
